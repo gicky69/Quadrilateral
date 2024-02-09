@@ -12,6 +12,14 @@ import java.util.Random;
 public class Player implements KeyListener {
     JLabel Player;
 
+    ImageIcon PlayerIcon = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003.gif");
+    ImageIcon PlayerMoving = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003moving.gif");
+    Image PlayerMovingImage = PlayerMoving.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
+    ImageIcon PlayerMovingIcon = new ImageIcon(PlayerMovingImage);
+    Image PlayerImage = PlayerIcon.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
+    ImageIcon PlayerIcon2 = new ImageIcon(PlayerImage);
+
+
     // Player Attributes
     int PosX = 1280/2;
     int PosY = 720/2;
@@ -43,12 +51,15 @@ public class Player implements KeyListener {
     public Player(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         Player = new JLabel();
+        Player.setHorizontalAlignment(JLabel.CENTER);
+        Player.setVerticalAlignment(JLabel.CENTER);
+        Player.setIcon(PlayerIcon2);
 
         Melee = new Melee();
         random = new Random();
 
         Player.setBounds(800/2,700/2,32,32);
-        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+//        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
         isDodge = false;
@@ -101,15 +112,18 @@ public class Player implements KeyListener {
 
         if (e.getKeyCode() == KeyEvent.VK_W) {
             DirY = -3;
+
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             DirY = 3;
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
             DirX = -3;
+            Player.setIcon(PlayerMovingIcon);
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 3;
+            Player.setIcon(PlayerMovingIcon);
         }
 
         // Melee Attack
@@ -198,9 +212,11 @@ public class Player implements KeyListener {
         }
         if(e.getKeyCode() == KeyEvent.VK_A) {
             DirX = 0;
+            Player.setIcon(PlayerIcon2);
         }
         if(e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 0;
+            Player.setIcon(PlayerIcon2);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_J){

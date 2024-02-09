@@ -8,6 +8,10 @@ import java.util.Random;
 
 public class GamePanel implements KeyListener {
     JPanel GamePanel;
+
+    // Colors
+    Color BGColor = new Color(45, 50, 80);
+
     boolean isPaused = false;
     Player Player;
 
@@ -27,7 +31,6 @@ public class GamePanel implements KeyListener {
     // 1 = Wall, 0 = None
     int Map1[] = {
             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -85,9 +88,9 @@ public class GamePanel implements KeyListener {
 
         rand = new Random();
 
-        GamePanel.setBounds(290,10,800,700);
+        GamePanel.setBounds(290,10,800,668);
         GamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        GamePanel.setBackground(Color.BLACK);
+        GamePanel.setBackground(BGColor);
         GamePanel.setLayout(null);
 
         GamePanel.add(Enemy.Enemy);

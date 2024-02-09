@@ -44,7 +44,6 @@ public class Main implements Runnable {
         Frame.setLayout(null);
         Frame.setLocationRelativeTo(null);
         Frame.setResizable(false);
-        Frame.setUndecorated(true);
 
         PauseMenu.setBounds(540, 25, 200,650);
         PauseMenu.setLayout(null);

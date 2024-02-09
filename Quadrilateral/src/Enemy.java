@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Enemy {
     JLabel Enemy;
+    ImageIcon EnemyIcon = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Slime.gif");
     JLabel ATKRange;
     Random random;
 
@@ -15,6 +16,10 @@ public class Enemy {
 
     public Enemy() {
         Enemy = new JLabel();
+        Enemy.setHorizontalAlignment(JLabel.CENTER);
+        Enemy.setVerticalAlignment(JLabel.CENTER);
+        Enemy.setIcon(EnemyIcon);
+
         ATKRange = new JLabel();
         random = new Random();
 
