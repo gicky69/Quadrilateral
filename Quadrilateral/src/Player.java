@@ -34,22 +34,14 @@ public class Player implements KeyListener {
     static int Health = 100;
     boolean isAttacking;
     boolean isDodge;
-    boolean isSpacebarDown = false;
     boolean isSpacebarSpammed = true;
     boolean vulnerability = false;
     int EnemysKilled = 0;
     Timer DodgeTime;
     //
-
-    // Enemies
-    Enemy Enemy;
-    int EPosX;
-    int EPosY;
     GamePanel gamePanel;
-    //
 
     // Attacks
-    Melee EMelee;
     Melee Melee;
     //
     Random random;
@@ -64,7 +56,7 @@ public class Player implements KeyListener {
         random = new Random();
 
         Player.setBounds(800/2,700/2,32,32);
-//        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
         isDodge = false;
@@ -72,6 +64,7 @@ public class Player implements KeyListener {
         Player.setLayout(null);
         Player.setVisible(true);
     }
+
 
     public void update(GamePanel GamePanel) {
 
@@ -103,8 +96,6 @@ public class Player implements KeyListener {
             System.out.println("GAME OVER NIGGA");
         }
     }
-
-    // Todo Fix Shoot
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -166,8 +157,7 @@ public class Player implements KeyListener {
             timer.start();
         }
         // Dash
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && !isSpacebarDown && isSpacebarSpammed){
-            isSpacebarDown = true;
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && isSpacebarSpammed){
             isSpacebarSpammed = false;
             isDodge = true;
 
@@ -231,7 +221,6 @@ public class Player implements KeyListener {
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             Player.setIcon(PlayerIcon2);
-            isSpacebarDown = false;
             isSpacebarSpammed = true;
         }
     }

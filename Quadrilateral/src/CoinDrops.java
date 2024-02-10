@@ -15,8 +15,8 @@ public class CoinDrops {
 
         CoinDrops.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
 
-        x = Rand.nextInt(500) + 100;
-        y = Rand.nextInt(500) + 100;
+        x = Rand.nextInt(735) + 32;
+        y = Rand.nextInt(608) + 32;
 
         CoinDrops.setBounds(x,y,32,32);
     }

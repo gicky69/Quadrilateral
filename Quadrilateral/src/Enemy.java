@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Enemy {
     JLabel Enemy;
+    JLabel Melee;
     ImageIcon EnemyIcon = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Slime.gif");
     JLabel ATKRange;
     Random random;
@@ -11,11 +12,20 @@ public class Enemy {
     int enemyX; // Changed to double
     int enemyY; // Changed to double
     int speed = 1; // Speed of the enemy
+    int dirATKX = 0;
+    int dirATKY = 0;
+    int dashdirX = 0;
+    int dashdirY = 0;
     boolean isAttacking; // New variable to track if the enemy is attacking
     boolean hasAttacked;
 
     public Enemy() {
         Enemy = new JLabel();
+        Melee = new JLabel();
+        Melee.setBorder(BorderFactory.createLineBorder(Color.RED));
+        Melee.setBackground(Color.RED);
+        Melee.setVisible(false);
+
         Enemy.setHorizontalAlignment(JLabel.CENTER);
         Enemy.setVerticalAlignment(JLabel.CENTER);
         Enemy.setIcon(EnemyIcon);
@@ -34,7 +44,6 @@ public class Enemy {
         Enemy.setVisible(true);
 
         isAttacking = false;
-        hasAttacked = false;
     }
 
     public void update(Player player) {
@@ -46,18 +55,22 @@ public class Enemy {
 
         // Only update the enemy's position if it's not attacking
         if (!isAttacking) {
-            if (playerX > enemyX) {
-                enemyX += speed;
-            }
-            else if (playerX < enemyX) {
-                enemyX -= speed;
+            if (playerX != enemyX) {
+                if (playerX >= enemyX) {
+                    enemyX += speed;
+                }
+                else if (playerX <= enemyX) {
+                    enemyX -= speed;
+                }
             }
 
-            if (playerY > enemyY) {
-                enemyY += speed;
-            }
-            else if (playerY < enemyY) {
-                enemyY -= speed;
+            if (playerY != enemyY) {
+                if (playerY >= enemyY) {
+                    enemyY += speed;
+                }
+                else if (playerY <= enemyY) {
+                    enemyY -= speed;
+                }
             }
 
             Enemy.setBounds(enemyX,enemyY, 32, 32);
@@ -70,30 +83,55 @@ public class Enemy {
     }
 
     public void attack(Player player) {
-        // Start Attack
         isAttacking = true;
         hasAttacked = true;
 
-        if (isAttacking) {
-            // Calculate direction from enemy to player
-            int direction = (int) ((Math.toDegrees(Math.atan2(player.Player.getY() - Enemy.getY(), player.Player.getX() - Enemy.getX())) + 360 + 90) % 360);
+        int playerX = player.Player.getX();
+        int playerY = player.Player.getY();
 
-            // Enemy Jump towards the Direction
-            
+        int eatkX = Enemy.getX();
+        int eatkY = Enemy.getY();
 
-            // Update the enemy's position
-            Enemy.setBounds(enemyX, enemyY, 32, 32);
+        dirATKY = 0;
+        dirATKX = 0;
 
-            // Stop attacking after a delay
-            Timer AttackCooldown = new Timer(1000, e -> {
-                isAttacking = false;
-                resetAttack();
-            });
-            AttackCooldown.setRepeats(false);
-            AttackCooldown.start();
+        // Attack the player
+        // Direction
+        if (playerX > enemyX) {
+            dashdirX += 7;
+            dirATKX += 32;
         }
-    }
-    public void resetAttack() {
-        hasAttacked = false;
+        else if (playerX < enemyX) {
+            dashdirX -= 7;
+            dirATKX -= 32;
+        }
+
+        if (playerY > enemyY) {
+            dashdirY += 7;
+            dirATKY += 32;
+        }
+        else if (playerY < enemyY) {
+            dashdirY -= 7;
+            dirATKY -= 32;
+        }
+
+        // Directional && Enemy Dash Towards the Player
+        Timer ATKDelay = new Timer(450, e -> {
+            Melee.setBounds(enemyX+dirATKX, enemyY+dirATKY, 32, 32);
+        });
+        ATKDelay.setRepeats(false);
+        ATKDelay.start();
+
+        Melee.setVisible(true);
+
+        // Reset Timer
+        Timer attackTimer = new Timer(1000, e -> {
+            isAttacking = false;
+            hasAttacked = false;
+            Melee.setVisible(false);
+            Melee.setBounds(-100,0,0,0);
+        });
+        attackTimer.setRepeats(false);
+        attackTimer.start();
     }
 }

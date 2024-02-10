@@ -13,9 +13,7 @@ public class Main implements Runnable {
 
     JPanel PauseMenu;
     JLabel PauseL;
-
     JLabel Center;
-
     Timer IGTimer;
     int seconds = 0;
     JPanel IGTimerP;
@@ -113,11 +111,11 @@ public class Main implements Runnable {
                 GamePanel.HealthLabel.setText("Health: " + Player.Health);
                 Frame.repaint();
 
-                if ((seconds + 2) % 120 == 0){
-                    ShopPanel.ShopPanel.setVisible(true);
-                    GamePanel.GamePanel.setVisible(false);
-                    IGTimer.stop();
-                }
+//                if ((seconds + 2) % 120 == 0){
+//                    ShopPanel.ShopPanel.setVisible(true);
+//                    GamePanel.GamePanel.setVisible(false);
+//                    IGTimer.stop();
+//                }
             } else {
                 PauseMenu.setVisible(true);
                 IGTimer.stop();

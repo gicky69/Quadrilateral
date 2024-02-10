@@ -73,6 +73,7 @@ public class GamePanel implements KeyListener {
 
     // Enemy
     Enemy Enemy;
+    Beams Beams;
 
 
     public GamePanel() {
@@ -85,6 +86,7 @@ public class GamePanel implements KeyListener {
         CoinsLabel = new JLabel();
         HealthLabel = new JLabel();
         Bomb = new Bomb();
+        Beams = new Beams();
 
         rand = new Random();
 
@@ -94,10 +96,16 @@ public class GamePanel implements KeyListener {
         GamePanel.setLayout(null);
 
         GamePanel.add(Enemy.Enemy);
+        GamePanel.add(Enemy.Melee);
         GamePanel.add(Player.Player);
         GamePanel.add(Player.Melee.Melee);
         GamePanel.addKeyListener(this);
         GamePanel.addKeyListener(Player);
+
+        // Shooter
+        GamePanel.add(Beams.Shooter);
+        GamePanel.add(Beams.Beam);
+        GamePanel.add(Beams.ShootingArea);
 
         // CoinsPanel
         CoinsPanel.setBounds(0,0,100,50);
@@ -112,9 +120,7 @@ public class GamePanel implements KeyListener {
         CoinsPanel.add(CoinsLabel);
         GamePanel.add(CoinDrops.CoinDrops);
 
-        // Bomb
-        GamePanel.add(Bomb.Bomb);
-        BombRandomSpawn = new Timer(1000, e -> {
+        BombRandomSpawn = new Timer(800, e -> {
             BombTimer -= 1;
             System.out.println(BombTimer);
 
@@ -245,11 +251,7 @@ public class GamePanel implements KeyListener {
             CoinDrops.CoinDrops.setVisible(false);
             CoinDrops.isCollected = true;
 
-            int cx = 100 + rand.nextInt(500);
-
-            int cy = 100 + rand.nextInt(500);
             TimerCoins = 10;
-
 
             Player.Coins += 100;
 
@@ -258,10 +260,11 @@ public class GamePanel implements KeyListener {
 
         // Bomb Explored Anywhere
 
-        if (MF.seconds / 30 == 1) {
+        if (MF.seconds != 0 && MF.seconds % 30 == 0) {
             if (!hasRun) {
                 speed += 1;
                 if (!BombRandomSpawn.isRunning()) {
+                    GamePanel.add(Bomb.Bomb);
                     Bomb.randomSpawn();
                     BombRandomSpawn.start();
                 }

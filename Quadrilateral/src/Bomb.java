@@ -26,6 +26,6 @@ public class Bomb {
         Bomb.setVisible(true);
         x = Rand.nextInt(500) + 100;
         y = Rand.nextInt(500) + 100;
-        Bomb.setBounds(x,y,100,100);
+        Bomb.setBounds(x,y,200,200);
     }
 }
