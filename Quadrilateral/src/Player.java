@@ -12,11 +12,16 @@ import java.util.Random;
 public class Player implements KeyListener {
     JLabel Player;
 
-    ImageIcon PlayerIcon = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003.gif");
-    ImageIcon PlayerMoving = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003moving.gif");
+    ImageIcon PlayerIcon = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003-export.gif");
+    ImageIcon PlayerMoving = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003-walking.gif");
+    Image PlayerMovingLeft = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003-walking-left.gif").getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
+    ImageIcon PlayerDashing = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003dash.gif");
     Image PlayerMovingImage = PlayerMoving.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
-    ImageIcon PlayerMovingIcon = new ImageIcon(PlayerMovingImage);
+    ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerMovingLeft);
+    Image PlayerDashingImage = PlayerDashing.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
     Image PlayerImage = PlayerIcon.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
+    ImageIcon PlayerMovingIcon = new ImageIcon(PlayerMovingImage);
+    ImageIcon PlayerDashingIcon = new ImageIcon(PlayerDashingImage);
     ImageIcon PlayerIcon2 = new ImageIcon(PlayerImage);
 
 
@@ -119,7 +124,7 @@ public class Player implements KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
             DirX = -3;
-            Player.setIcon(PlayerMovingIcon);
+            Player.setIcon(PlayerMovingLeftIcon);
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 3;
@@ -193,6 +198,7 @@ public class Player implements KeyListener {
                 DirX = 6;
             }
 
+            Player.setIcon(PlayerDashingIcon);
             Timer timer = new Timer(250, e1 -> {
                 DirX = oldDirX;
                 DirY = oldDirY;
@@ -224,6 +230,7 @@ public class Player implements KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            Player.setIcon(PlayerIcon2);
             isSpacebarDown = false;
             isSpacebarSpammed = true;
         }
