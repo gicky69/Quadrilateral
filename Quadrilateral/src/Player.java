@@ -12,17 +12,16 @@ import java.util.Random;
 public class Player implements KeyListener {
     JLabel Player;
 
-    ImageIcon PlayerIcon = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003-export.gif");
-    ImageIcon PlayerMoving = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003-walking.gif");
-    Image PlayerMovingLeft = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003-walking-left.gif").getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
-    ImageIcon PlayerDashing = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\Images\\Sprite-0003dash.gif");
-    Image PlayerMovingImage = PlayerMoving.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
-    ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerMovingLeft);
-    Image PlayerDashingImage = PlayerDashing.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
-    Image PlayerImage = PlayerIcon.getImage().getScaledInstance(48,50,Image.SCALE_DEFAULT);
-    ImageIcon PlayerMovingIcon = new ImageIcon(PlayerMovingImage);
-    ImageIcon PlayerDashingIcon = new ImageIcon(PlayerDashingImage);
-    ImageIcon PlayerIcon2 = new ImageIcon(PlayerImage);
+    Image PlayerImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerImageIdle = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingRight = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-WalkingRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingLeft = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-WalkingLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerDashing = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-dash.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    ImageIcon PlayerWalkingRightIcon = new ImageIcon(PlayerWalkingRight);
+    ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerWalkingLeft);
+    ImageIcon PlayerDashingIcon = new ImageIcon(PlayerDashing);
+    ImageIcon PlayerIcon = new ImageIcon(PlayerImage);
+    ImageIcon PlayerIconIdle = new ImageIcon(PlayerImageIdle);
 
 
     // Player Attributes
@@ -45,17 +44,19 @@ public class Player implements KeyListener {
     Melee Melee;
     //
     Random random;
+
+    Timer IdleTimer;
     public Player(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         Player = new JLabel();
         Player.setHorizontalAlignment(JLabel.CENTER);
         Player.setVerticalAlignment(JLabel.CENTER);
-        Player.setIcon(PlayerIcon2);
+        Player.setIcon(PlayerIcon);
 
         Melee = new Melee();
         random = new Random();
 
-        Player.setBounds(800/2,700/2,32,32);
+        Player.setBounds(800/2,700/2,64,64);
         Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
@@ -63,6 +64,10 @@ public class Player implements KeyListener {
 
         Player.setLayout(null);
         Player.setVisible(true);
+
+        IdleTimer = new Timer(1000, e1 -> {
+            Player.setIcon(PlayerIconIdle);
+        });
     }
 
 
@@ -77,7 +82,7 @@ public class Player implements KeyListener {
         PosX += DirX;
         PosY += DirY;
 
-        Player.setBounds(PosX, PosY, 32, 32);
+        Player.setBounds(PosX, PosY, 64, 64);
 
         // Player Collides with Walls
         for (int i = 0; i < GamePanel.Walls.size(); i++) {
@@ -87,7 +92,7 @@ public class Player implements KeyListener {
             }
         }
 
-        Player.setBounds(PosX, PosY, 32, 32);
+        Player.setBounds(PosX, PosY, 64, 64);
 
         // Player Dies
         if (Health <= 0) {
@@ -95,6 +100,8 @@ public class Player implements KeyListener {
             Player.setVisible(false);
             System.out.println("GAME OVER NIGGA");
         }
+
+        IdleTimer.start();
     }
 
     @Override
@@ -119,7 +126,7 @@ public class Player implements KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 3;
-            Player.setIcon(PlayerMovingIcon);
+            Player.setIcon(PlayerWalkingRightIcon);
         }
 
         // Melee Attack
@@ -208,11 +215,11 @@ public class Player implements KeyListener {
         }
         if(e.getKeyCode() == KeyEvent.VK_A) {
             DirX = 0;
-            Player.setIcon(PlayerIcon2);
+            Player.setIcon(PlayerIcon);
         }
         if(e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 0;
-            Player.setIcon(PlayerIcon2);
+            Player.setIcon(PlayerIcon);
         }
 
         if (e.getKeyCode() == KeyEvent.VK_J){
@@ -220,7 +227,8 @@ public class Player implements KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            Player.setIcon(PlayerIcon2);
+            Player.setIcon(PlayerIcon);
+
             isSpacebarSpammed = true;
         }
     }
