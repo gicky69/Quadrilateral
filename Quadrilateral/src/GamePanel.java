@@ -30,32 +30,50 @@ public class GamePanel implements KeyListener {
 
     // 1 = Wall, 0 = None
     int Map1[] = {
-            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+            6,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,
     };
 
     int WOD[] = {
             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     };
+    Image WODImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\WOD.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image WODTPImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\WODTP.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    ImageIcon WODIcon = new ImageIcon(WODImage);
+    ImageIcon WODTPIcon = new ImageIcon(WODTPImage);
+
+    // Map 0 1 2 3 4
+    Image MapRightImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP2.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapFloorImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP0.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapBottomImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP3.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapCornerImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP4.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapEndImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP5.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapEndBottomImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP6.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    ImageIcon MapRightIcon = new ImageIcon(MapRightImage);
+    ImageIcon MapFloorIcon = new ImageIcon(MapFloorImage);
+    ImageIcon MapBottomIcon = new ImageIcon(MapBottomImage);
+    ImageIcon MapCornerIcon = new ImageIcon(MapCornerImage);
+    ImageIcon MapEndIcon = new ImageIcon(MapEndImage);
+    ImageIcon MapEndBottomIcon = new ImageIcon(MapEndBottomImage);
 
     JPanel CoinsPanel;
     JLabel CoinsLabel;
@@ -90,14 +108,13 @@ public class GamePanel implements KeyListener {
 
         rand = new Random();
 
-        GamePanel.setBounds(290,10,800,668);
-        GamePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        GamePanel.setBackground(BGColor);
+        GamePanel.setBounds(290,5,800,670);
         GamePanel.setLayout(null);
 
         GamePanel.add(Enemy.Enemy);
         GamePanel.add(Enemy.Melee);
         GamePanel.add(Player.Player);
+        GamePanel.setComponentZOrder(Player.Player, 0);
         GamePanel.add(Player.Melee.Melee);
         GamePanel.addKeyListener(this);
         GamePanel.addKeyListener(Player);
@@ -161,8 +178,7 @@ public class GamePanel implements KeyListener {
         for (int i=0;i<25;i++){
             if (WOD[i] == 1) {
                 JLabel Wall = new JLabel();
-                Wall.setBorder(BorderFactory.createLineBorder(Color.RED));
-                Wall.setBackground(Color.RED);
+                Wall.setIcon(WODIcon);
                 Wall.setVisible(true);
                 GamePanel.add(Wall);
                 WODs.add(Wall);
@@ -182,6 +198,7 @@ public class GamePanel implements KeyListener {
                     WODs.get(i).setBounds(i*32, 700, 32, 32);
                     break;
             }
+            GamePanel.setComponentZOrder(WODs.get(i), 1);
         }
 
         GamePanel.revalidate();
@@ -197,12 +214,14 @@ public class GamePanel implements KeyListener {
                     wod.setLocation(wod.getX() + speed, wod.getY());
                     break;
                 case 2:
+                    wod.setIcon(WODTPIcon);
                     wod.setLocation(wod.getX(), wod.getY() + speed);
                     break;
                 case 3:
                     wod.setLocation(wod.getX() - speed, wod.getY());
                     break;
                 case 4:
+                    wod.setIcon(WODTPIcon);
                     wod.setLocation(wod.getX(), wod.getY() - speed);
                     break;
             }
@@ -276,10 +295,57 @@ public class GamePanel implements KeyListener {
     }
     public void generate() {
         for (int i=0;i<Map1.length;i++){
+            if (Map1[i] == 0) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(MapFloorIcon);
+                Wall.setBounds((i%25)*32,(i/25)*32,32,32);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+            }
             if (Map1[i] == 1) {
                 JLabel Wall = new JLabel();
-                Wall.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-                Wall.setBackground(Color.WHITE);
+                Wall.setIcon(MapFloorIcon);
+                Wall.setBounds((i%25)*32,(i/25)*32,32,32);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                Walls.add(Wall);
+            }
+            if (Map1[i] == 2) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(MapRightIcon);
+                Wall.setBounds((i%25)*32,(i/25)*32,32,32);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                Walls.add(Wall);
+            }
+            if (Map1[i] == 3) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(MapBottomIcon);
+                Wall.setBounds((i%25)*32,(i/25)*32,32,32);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                Walls.add(Wall);
+            }
+            if (Map1[i] == 4) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(MapCornerIcon);
+                Wall.setBounds((i%25)*32,(i/25)*32,32,32);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                Walls.add(Wall);
+            }
+
+            if (Map1[i] == 5) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(MapEndIcon);
+                Wall.setBounds((i%25)*32,(i/25)*32,32,32);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                Walls.add(Wall);
+            }
+            if (Map1[i] == 6) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(MapEndBottomIcon);
                 Wall.setBounds((i%25)*32,(i/25)*32,32,32);
                 Wall.setVisible(true);
                 GamePanel.add(Wall);

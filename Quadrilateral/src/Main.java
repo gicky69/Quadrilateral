@@ -13,7 +13,6 @@ public class Main implements Runnable {
 
     JPanel PauseMenu;
     JLabel PauseL;
-    JLabel Center;
     Timer IGTimer;
     int seconds = 0;
     JPanel IGTimerP;
@@ -30,7 +29,6 @@ public class Main implements Runnable {
         ShopPanel = new Shop();
         PauseMenu = new JPanel();
         PauseL = new JLabel("Paused");
-        Center = new JLabel();
 
         // Timer
         IGTimerP = new JPanel();
@@ -53,9 +51,6 @@ public class Main implements Runnable {
 
         PauseMenu.setVisible(false);
 
-        Center.setBounds(640,0,1,720);
-        Center.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
         IGTimerP.setBounds(640,0,100,50);
         IGTimerP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         IGTimerP.setBackground(Color.GRAY);
@@ -70,7 +65,6 @@ public class Main implements Runnable {
             MainMenu.Play.addActionListener(e -> {
                 Frame.remove(MainMenu.MainMenu);
                 Frame.add(IGTimerP);
-                Frame.add(Center);
                 Frame.add(PauseMenu);
                 Frame.add(GamePanel.GamePanel);
                 Frame.add(GamePanel.CoinsPanel);
