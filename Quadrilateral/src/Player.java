@@ -56,7 +56,7 @@ public class Player implements KeyListener {
         Melee = new Melee();
         random = new Random();
 
-        Player.setBounds(800/2,700/2,64,64);
+        Player.setBounds(800/2,700/2,50,60);
         Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
@@ -82,7 +82,7 @@ public class Player implements KeyListener {
         PosX += DirX;
         PosY += DirY;
 
-        Player.setBounds(PosX, PosY, 64, 64);
+        Player.setBounds(PosX, PosY, 50, 55);
 
         // Player Collides with Walls
         for (int i = 0; i < GamePanel.Walls.size(); i++) {
@@ -92,7 +92,7 @@ public class Player implements KeyListener {
             }
         }
 
-        Player.setBounds(PosX, PosY, 64, 64);
+        Player.setBounds(PosX, PosY, 50, 55);
 
         // Player Dies
         if (Health <= 0) {
