@@ -54,12 +54,16 @@ public class GamePanel implements KeyListener {
     };
 
     int WOD[] = {
-            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+            2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,
     };
     Image WODImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\WOD.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
     Image WODTPImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\WODTP.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
     ImageIcon WODIcon = new ImageIcon(WODImage);
     ImageIcon WODTPIcon = new ImageIcon(WODTPImage);
+    Image WODHEADImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAPHEAD1.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image WODHeadImageBtm = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAPHEAD2.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    ImageIcon WODHEADIcon = new ImageIcon(WODHEADImage);
+    ImageIcon WODHeadIconBtm = new ImageIcon(WODHeadImageBtm);
 
     // Map 0 1 2 3 4
     Image MapRightImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP2.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
@@ -75,6 +79,11 @@ public class GamePanel implements KeyListener {
     ImageIcon MapEndIcon = new ImageIcon(MapEndImage);
     ImageIcon MapEndBottomIcon = new ImageIcon(MapEndBottomImage);
 
+    // Coins
+    Image CoinAppearImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Smoke-Pop.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image CoinIdleImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Smoke-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    ImageIcon CoinAppearIcon = new ImageIcon(CoinAppearImage);
+    ImageIcon CoinIdleIcon = new ImageIcon(CoinIdleImage);
     JPanel CoinsPanel;
     JLabel CoinsLabel;
     JLabel HealthLabel;
@@ -136,6 +145,7 @@ public class GamePanel implements KeyListener {
         CoinsPanel.add(HealthLabel);
         CoinsPanel.add(CoinsLabel);
         GamePanel.add(CoinDrops.CoinDrops);
+        CoinDrops.CoinDrops.setIcon(CoinIdleIcon);
 
         BombRandomSpawn = new Timer(800, e -> {
             BombTimer -= 1;
@@ -147,6 +157,11 @@ public class GamePanel implements KeyListener {
             }
         });
 
+        Timer CoinIdleDelay = new Timer(1350, e -> {
+            CoinDrops.CoinDrops.setIcon(CoinIdleIcon);
+            ((Timer)e.getSource()).stop();
+        });
+
         // Delay for Coin Spawn
         CoinsDelay = new Timer(300, e -> {
             TimerCoins -= 1;
@@ -154,12 +169,19 @@ public class GamePanel implements KeyListener {
 
             if (TimerCoins <= 0){
                 CoinDrops.isCollected = false;
-                int cx = 100 + rand.nextInt(500);
-                int cy = 100 + rand.nextInt(500);
-
-                CoinDrops.CoinDrops.setBounds(cx, cy, 32, 32);
-                CoinDrops.CoinDrops.setVisible(true);
                 GamePanel.add(CoinDrops.CoinDrops);
+                CoinDrops.CoinDrops.setIcon(CoinAppearIcon);
+                int cx = rand.nextInt(735) + 32;
+                int cy = rand.nextInt(508) + 32;
+                CoinIdleDelay.start();
+
+                CoinDrops.CoinDrops.setBounds(cx, cy, 64, 64);
+                CoinDrops.CoinDrops.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
+                CoinDrops.CoinDrops.setVisible(true);
+
+                GamePanel.setComponentZOrder(CoinDrops.CoinDrops, 2);
+                GamePanel.revalidate();
+                GamePanel.repaint();
                 CoinsDelay.stop();
             }
         });
@@ -179,6 +201,20 @@ public class GamePanel implements KeyListener {
             if (WOD[i] == 1) {
                 JLabel Wall = new JLabel();
                 Wall.setIcon(WODIcon);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                WODs.add(Wall);
+            }
+            if (WOD[i] == 2) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(WODHEADIcon);
+                Wall.setVisible(true);
+                GamePanel.add(Wall);
+                WODs.add(Wall);
+            }
+            if (WOD[i] == 3) {
+                JLabel Wall = new JLabel();
+                Wall.setIcon(WODHeadIconBtm);
                 Wall.setVisible(true);
                 GamePanel.add(Wall);
                 WODs.add(Wall);
@@ -276,6 +312,7 @@ public class GamePanel implements KeyListener {
 
             CoinsDelay.start();
         }
+
 
         // Bomb Explored Anywhere
 

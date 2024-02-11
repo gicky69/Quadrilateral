@@ -4,6 +4,8 @@ import java.awt.*;
 
 public class CoinDrops {
     JLabel CoinDrops;
+    Image CoinImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Smoke-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    ImageIcon CoinIcon = new ImageIcon(CoinImage);
     Random Rand;
     int x;
     int y;
@@ -11,6 +13,7 @@ public class CoinDrops {
 
     public CoinDrops() {
         CoinDrops = new JLabel();
+
         Rand = new Random();
 
         CoinDrops.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
@@ -18,6 +21,6 @@ public class CoinDrops {
         x = Rand.nextInt(735) + 32;
         y = Rand.nextInt(608) + 32;
 
-        CoinDrops.setBounds(x,y,32,32);
+        CoinDrops.setBounds(x,y,64,64);
     }
 }
