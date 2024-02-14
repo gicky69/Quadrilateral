@@ -38,8 +38,10 @@ public class Player implements KeyListener {
     static int Health = 100;
     boolean isAttacking;
     boolean isDodge;
-    boolean isSpacebarSpammed = true;
+    boolean isSpacebarSpammed = false;
     boolean vulnerability = false;
+    boolean MovingLeft = false;
+    boolean MovingRight = false;
     int EnemysKilled = 0;
     Timer DodgeTime;
 
@@ -64,7 +66,6 @@ public class Player implements KeyListener {
         random = new Random();
 
         Player.setBounds(800/2,700/2,64,64);
-        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
         isDodge = false;
@@ -108,6 +109,14 @@ public class Player implements KeyListener {
         if (!isDodge) {
             Player.setBounds(PosX, PosY, 64, 64);
         }
+        if (MovingLeft && !isDodge) {
+            Player.setIcon(PlayerMovingLeftIcon);
+        }
+        if (MovingRight && !isDodge) {
+            Player.setIcon(PlayerWalkingRightIcon);
+        }
+
+
 
         // Player Dies
         if (Health <= 0) {
@@ -137,95 +146,26 @@ public class Player implements KeyListener {
         }
         if (e.getKeyCode() == KeyEvent.VK_A) {
             DirX = -3;
-            Player.setIcon(PlayerMovingLeftIcon);
+            if (!isDodge) { // Check if player is not dodging
+                Player.setIcon(PlayerMovingLeftIcon);
+                MovingLeft = true;
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 3;
-            Player.setIcon(PlayerWalkingRightIcon);
+            if (!isDodge) { // Check if player is not dodging
+                Player.setIcon(PlayerWalkingRightIcon);
+                MovingRight = true;
+            }
         }
 
-        // Melee Attack
-//        if (e.getKeyCode() == KeyEvent.VK_J && !isAttacking){
-//            if (isDodge){
-//                return;
-//            }
-//
-//            isAttacking = true;
-//            Melee.Melee.setVisible(true);
-//            if (DirX == 3){
-//                Melee.Melee.setBounds(PosX+15,PosY-7,20,25);
-//            }
-//            if (DirX == -3){
-//                Melee.Melee.setBounds(PosX-25,PosY-7,20,25);
-//            }
-//            if (DirY == 3){
-//                Melee.Melee.setBounds(PosX-7,PosY+15,25,20);
-//            }
-//            if (DirY == -3){
-//                Melee.Melee.setBounds(PosX-7,PosY-25,25,20);
-//            }
-//
-//            // Error Checking
-//            if (DirX == 0 && DirY == 0){
-//                Melee.Melee.setBounds(PosX+15,PosY-7,20,25);
-//            }
-//
-//            Timer timer = new Timer(100, KeyEvent -> {
-//                Melee.Melee.setBounds(1600,1600,20,25);
-//                Melee.Melee.setVisible(false);
-//                isAttacking = false;
-//            });
-//            timer.setRepeats(false);
-//            timer.start();
-//        }
-//         Dash
-//        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && isSpacebarSpammed){
-//            isSpacebarSpammed = false;
-//            isDodge = true;
-//
-//            DodgeTime = new Timer(500, e2 ->{
-//                isDodge = false;
-//            });
-//
-//            DodgeTime.setRepeats(false);
-//            DodgeTime.start();
-//
-//            int oldDirX = DirX;
-//            int oldDirY = DirY;
-//
-//            // Direction of Dash
-//            if (oldDirX > 0){
-//                DirX = 6;
-//            }
-//            if (oldDirX < 0){
-//                DirX = -6;
-//            }
-//            if (oldDirY < 0){
-//                DirY = -6;
-//            }
-//            if (oldDirY > 0){
-//                DirY = 6;
-//            }
-//            if (oldDirX == 0 && oldDirY == 0) {
-//                DirX = 6;
-//            }
-//
-//            Player.setIcon(PlayerDashingIcon);
-//            Timer timer = new Timer(250, e1 -> {
-//                DirX = oldDirX;
-//                DirY = oldDirY;
-//            });
-//            timer.setRepeats(false);
-//            timer.start();
-//        }
-
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && !isSpacebarSpammed){
             isSpacebarSpammed = true;
             isDodge = true;
             Player.setIcon(PlayerJumpinngIcon);
             Player.setBounds(Player.getX(), Player.getY(), 64, 64);
 
-            DodgeTime = new Timer(700, e2 ->{
+            DodgeTime = new Timer(450, e2 ->{
 
                 isDodge = false;
                 Player.setIcon(PlayerIcon);
@@ -247,10 +187,12 @@ public class Player implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_A) {
             DirX = 0;
             Player.setIcon(PlayerIcon);
+            MovingLeft = false;
         }
         if(e.getKeyCode() == KeyEvent.VK_D) {
             DirX = 0;
             Player.setIcon(PlayerIcon);
+            MovingRight = false;
         }
 
         if (e.getKeyCode() == KeyEvent.VK_J){
@@ -258,7 +200,7 @@ public class Player implements KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            isSpacebarSpammed = true;
+            isSpacebarSpammed = false;
         }
     }
 }
