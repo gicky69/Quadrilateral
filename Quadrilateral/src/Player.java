@@ -12,14 +12,16 @@ import java.util.Random;
 public class Player implements KeyListener {
     JLabel Player;
 
-    Image PlayerImage = new ImageIcon("Quadrilateral/src/Images/Player.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerImage = new ImageIcon("Quadrilateral/src/Images/Slime.png").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image PlayerImageIdle = new ImageIcon("Quadrilateral/src/Images/Player-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerWalkingRight = new ImageIcon("Quadrilateral/src/Images/Player-WalkingRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerWalkingLeft = new ImageIcon("Quadrilateral/src/Images/Player-WalkingLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingRight = new ImageIcon("Quadrilateral/src/Images/Slime-MoveRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingLeft = new ImageIcon("Quadrilateral/src/Images/Slime-MoveLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image PlayerDashing = new ImageIcon("Quadrilateral/src/Images/Player-dash.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerJumpingImage = new ImageIcon("Quadrilateral/src/Images/Slime-Jump.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon PlayerWalkingRightIcon = new ImageIcon(PlayerWalkingRight);
     ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerWalkingLeft);
     ImageIcon PlayerDashingIcon = new ImageIcon(PlayerDashing);
+    ImageIcon PlayerJumpinngIcon = new ImageIcon(PlayerJumpingImage);
     ImageIcon PlayerIcon = new ImageIcon(PlayerImage);
     ImageIcon PlayerIconIdle = new ImageIcon(PlayerImageIdle);
 
@@ -61,8 +63,8 @@ public class Player implements KeyListener {
         Melee = new Melee();
         random = new Random();
 
-        Player.setBounds(800/2,700/2,40,60);
-//        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        Player.setBounds(800/2,700/2,64,64);
+        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
         isDodge = false;
@@ -70,9 +72,9 @@ public class Player implements KeyListener {
         Player.setLayout(null);
         Player.setVisible(true);
 
-        IdleTimer = new Timer(1000, e1 -> {
-            Player.setIcon(PlayerIconIdle);
-        });
+//        IdleTimer = new Timer(1000, e1 -> {
+//            Player.setIcon(PlayerIconIdle);
+//        });
     }
 
 
@@ -92,7 +94,8 @@ public class Player implements KeyListener {
             PosY += gravity;  // Apply gravity only if the player is falling
         }
 
-        Player.setBounds(PosX, PosY, 40, 55);
+        Player.setBounds(PosX, PosY, 64, 64);
+
 
         // Player Collides with Walls
         for (int i = 0; i < GamePanel.Walls.size(); i++) {
@@ -102,7 +105,9 @@ public class Player implements KeyListener {
             }
         }
 
-        Player.setBounds(PosX, PosY, 40, 55);
+        if (!isDodge) {
+            Player.setBounds(PosX, PosY, 64, 64);
+        }
 
         // Player Dies
         if (Health <= 0) {
@@ -111,7 +116,7 @@ public class Player implements KeyListener {
             System.out.println("GAME OVER NIGGA");
         }
 
-        IdleTimer.start();
+//        IdleTimer.start();
     }
 
     @Override
@@ -174,44 +179,60 @@ public class Player implements KeyListener {
 //            timer.start();
 //        }
 //         Dash
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && isSpacebarSpammed){
-            isSpacebarSpammed = false;
+//        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && isSpacebarSpammed){
+//            isSpacebarSpammed = false;
+//            isDodge = true;
+//
+//            DodgeTime = new Timer(500, e2 ->{
+//                isDodge = false;
+//            });
+//
+//            DodgeTime.setRepeats(false);
+//            DodgeTime.start();
+//
+//            int oldDirX = DirX;
+//            int oldDirY = DirY;
+//
+//            // Direction of Dash
+//            if (oldDirX > 0){
+//                DirX = 6;
+//            }
+//            if (oldDirX < 0){
+//                DirX = -6;
+//            }
+//            if (oldDirY < 0){
+//                DirY = -6;
+//            }
+//            if (oldDirY > 0){
+//                DirY = 6;
+//            }
+//            if (oldDirX == 0 && oldDirY == 0) {
+//                DirX = 6;
+//            }
+//
+//            Player.setIcon(PlayerDashingIcon);
+//            Timer timer = new Timer(250, e1 -> {
+//                DirX = oldDirX;
+//                DirY = oldDirY;
+//            });
+//            timer.setRepeats(false);
+//            timer.start();
+//        }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            isSpacebarSpammed = true;
             isDodge = true;
+            Player.setIcon(PlayerJumpinngIcon);
+            Player.setBounds(Player.getX(), Player.getY(), 64, 64);
 
-            DodgeTime = new Timer(500, e2 ->{
+            DodgeTime = new Timer(700, e2 ->{
+
                 isDodge = false;
+                Player.setIcon(PlayerIcon);
+                Player.setBounds(Player.getX(), Player.getY(), 64, 64);
             });
-
             DodgeTime.setRepeats(false);
             DodgeTime.start();
-
-            int oldDirX = DirX;
-            int oldDirY = DirY;
-
-            // Direction of Dash
-            if (oldDirX > 0){
-                DirX = 6;
-            }
-            if (oldDirX < 0){
-                DirX = -6;
-            }
-            if (oldDirY < 0){
-                DirY = -6;
-            }
-            if (oldDirY > 0){
-                DirY = 6;
-            }
-            if (oldDirX == 0 && oldDirY == 0) {
-                DirX = 6;
-            }
-
-            Player.setIcon(PlayerDashingIcon);
-            Timer timer = new Timer(250, e1 -> {
-                DirX = oldDirX;
-                DirY = oldDirY;
-            });
-            timer.setRepeats(false);
-            timer.start();
         }
 
     }
@@ -237,8 +258,6 @@ public class Player implements KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            Player.setIcon(PlayerIcon);
-
             isSpacebarSpammed = true;
         }
     }
