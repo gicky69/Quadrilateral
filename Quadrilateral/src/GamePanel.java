@@ -19,19 +19,20 @@ public class GamePanel implements KeyListener {
     List<JLabel> WODs = new ArrayList<>();
 
     Random rand;
-    int lvl = 1;
+    int lvl;
 
     // BOMB
     Bomb Bomb;
     int BombTimer;
     Timer BombRandomSpawn;
     boolean hasRun = false;
+    boolean hasRun2 = false;
+    boolean hasRun3 = false;
     //
 
     // 1 = Wall, 0 = None
     int Map1[] = {
             1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
@@ -56,22 +57,22 @@ public class GamePanel implements KeyListener {
     int WOD[] = {
             2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,
     };
-    Image WODImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\WOD.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image WODTPImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\WODTP.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image WODImage = new ImageIcon("Quadrilateral/src/Images/WOD.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image WODTPImage = new ImageIcon("Quadrilateral/src/Images/WODTP.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
     ImageIcon WODIcon = new ImageIcon(WODImage);
     ImageIcon WODTPIcon = new ImageIcon(WODTPImage);
-    Image WODHEADImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAPHEAD1.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image WODHeadImageBtm = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAPHEAD2.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image WODHEADImage = new ImageIcon("Quadrilateral/src/Images/MAPHEAD1.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image WODHeadImageBtm = new ImageIcon("Quadrilateral/src/Images/MAPHEAD2.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
     ImageIcon WODHEADIcon = new ImageIcon(WODHEADImage);
     ImageIcon WODHeadIconBtm = new ImageIcon(WODHeadImageBtm);
 
     // Map 0 1 2 3 4
-    Image MapRightImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP2.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image MapFloorImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP0.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image MapBottomImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP3.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image MapCornerImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP4.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image MapEndImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP5.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image MapEndBottomImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\MAP6.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapRightImage = new ImageIcon("Quadrilateral/src/Images/MAP2.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapFloorImage = new ImageIcon("Quadrilateral/src/Images/MAP0.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapBottomImage = new ImageIcon("Quadrilateral/src/Images/MAP3.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapCornerImage = new ImageIcon("Quadrilateral/src/Images/MAP4.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapEndImage = new ImageIcon("Quadrilateral/src/Images/MAP5.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
+    Image MapEndBottomImage = new ImageIcon("Quadrilateral/src/Images/MAP6.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
     ImageIcon MapRightIcon = new ImageIcon(MapRightImage);
     ImageIcon MapFloorIcon = new ImageIcon(MapFloorImage);
     ImageIcon MapBottomIcon = new ImageIcon(MapBottomImage);
@@ -80,8 +81,8 @@ public class GamePanel implements KeyListener {
     ImageIcon MapEndBottomIcon = new ImageIcon(MapEndBottomImage);
 
     // Coins
-    Image CoinAppearImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Smoke-Pop.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image CoinIdleImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Smoke-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image CoinAppearImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Pop.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image CoinIdleImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon CoinAppearIcon = new ImageIcon(CoinAppearImage);
     ImageIcon CoinIdleIcon = new ImageIcon(CoinIdleImage);
     JPanel CoinsPanel;
@@ -101,14 +102,18 @@ public class GamePanel implements KeyListener {
     // Enemy
     Enemy Enemy;
     Beams Beams;
+    Sniper Sniper;
+    Timer ShooterSpawnDelay;
 
 
     public GamePanel() {
         GamePanel = new JPanel();
         CoinDrops = new CoinDrops();
         Player = new Player(this);
-        Enemy = new Enemy();
+//        Enemy = new Enemy();
         MapPanel = new JPanel();
+        Sniper = new Sniper();
+
         CoinsPanel = new JPanel();
         CoinsLabel = new JLabel();
         HealthLabel = new JLabel();
@@ -117,21 +122,14 @@ public class GamePanel implements KeyListener {
 
         rand = new Random();
 
-        GamePanel.setBounds(290,5,800,670);
+        GamePanel.setBounds(290,30,800,670);
         GamePanel.setLayout(null);
 
-        GamePanel.add(Enemy.Enemy);
-        GamePanel.add(Enemy.Melee);
         GamePanel.add(Player.Player);
         GamePanel.setComponentZOrder(Player.Player, 0);
         GamePanel.add(Player.Melee.Melee);
         GamePanel.addKeyListener(this);
         GamePanel.addKeyListener(Player);
-
-        // Shooter
-        GamePanel.add(Beams.Shooter);
-        GamePanel.add(Beams.Beam);
-        GamePanel.add(Beams.ShootingArea);
 
         // CoinsPanel
         CoinsPanel.setBounds(0,0,100,50);
@@ -147,11 +145,13 @@ public class GamePanel implements KeyListener {
         GamePanel.add(CoinDrops.CoinDrops);
         CoinDrops.CoinDrops.setIcon(CoinIdleIcon);
 
-        BombRandomSpawn = new Timer(800, e -> {
+        BombRandomSpawn = new Timer(300, e -> {
             BombTimer -= 1;
             System.out.println(BombTimer);
+            GamePanel.setComponentZOrder(Bomb.Bomb, 1);
 
             if (BombTimer <= 0){
+                speed = rand.nextInt(6) + 2;
                 Bomb.randomSpawn();
                 BombTimer = 10;
             }
@@ -171,24 +171,27 @@ public class GamePanel implements KeyListener {
                 CoinDrops.isCollected = false;
                 GamePanel.add(CoinDrops.CoinDrops);
                 CoinDrops.CoinDrops.setIcon(CoinAppearIcon);
-                int cx = rand.nextInt(735) + 32;
-                int cy = rand.nextInt(508) + 32;
+                int cx = rand.nextInt(635) + 32;
+                int cy = rand.nextInt(408) + 32;
                 CoinIdleDelay.start();
 
                 CoinDrops.CoinDrops.setBounds(cx, cy, 64, 64);
-                CoinDrops.CoinDrops.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
                 CoinDrops.CoinDrops.setVisible(true);
 
-                GamePanel.setComponentZOrder(CoinDrops.CoinDrops, 2);
+                GamePanel.setComponentZOrder(CoinDrops.CoinDrops, 1);
                 GamePanel.revalidate();
                 GamePanel.repaint();
                 CoinsDelay.stop();
             }
         });
-
+        ShooterSpawnDelay = new Timer(5000, e ->{
+           Beams.spawn();
+        });
 
         Bomb.randomSpawn();
         generate();
+
+        lvl = rand.nextInt(4)+1;
         createWOD(lvl);
 //        generateWOD();
         GamePanel.setFocusable(true);
@@ -234,7 +237,7 @@ public class GamePanel implements KeyListener {
                     WODs.get(i).setBounds(i*32, 700, 32, 32);
                     break;
             }
-            GamePanel.setComponentZOrder(WODs.get(i), 1);
+            GamePanel.setComponentZOrder(WODs.get(i), 0);
         }
 
         GamePanel.revalidate();
@@ -271,8 +274,14 @@ public class GamePanel implements KeyListener {
                 GamePanel.remove(wod);
                 wod.setVisible(false);
                 WODs.clear();
-                lvl = (lvl % 4) + 1;
-                createWOD(lvl);
+                // randomize lvl
+                lvl = rand.nextInt(4)+1;
+                int time = rand.nextInt(4001) + 50;
+                Timer createWod = new Timer(time, e -> {
+                    createWOD(lvl);
+                    ((Timer)e.getSource()).stop();
+                });
+                createWod.start();
                 break;
             }
         }
@@ -281,9 +290,10 @@ public class GamePanel implements KeyListener {
     }
     public void update(Main MF) {
         Player.update(this);
-        Enemy.update(Player);
+//        Enemy.update(Player);
+        Beams.update(this);
+        Sniper.update();
         moveWOD();
-
 
 //        for (int i=0;i<WODs.size();i++){
 //            if (WODs.get(i).getBounds().intersects(Player.Player.getBounds())){
@@ -312,13 +322,9 @@ public class GamePanel implements KeyListener {
 
             CoinsDelay.start();
         }
-
-
-        // Bomb Explored Anywhere
-
-        if (MF.seconds != 0 && MF.seconds % 30 == 0) {
+        // Bomb Explored Anywhere, Starts at 25 secs
+        if (MF.seconds != 0 && MF.seconds % 20 == 0) {
             if (!hasRun) {
-                speed += 1;
                 if (!BombRandomSpawn.isRunning()) {
                     GamePanel.add(Bomb.Bomb);
                     Bomb.randomSpawn();
@@ -329,6 +335,45 @@ public class GamePanel implements KeyListener {
         } else {
             hasRun = false;
         }
+        if (MF.seconds != 0 && MF.seconds % 35 == 0) {
+            if (!hasRun2) {
+                GamePanel.add(Beams.Shooter);
+                GamePanel.add(Beams.Beam);
+                GamePanel.add(Beams.ShootingArea);
+                GamePanel.setComponentZOrder(Beams.Shooter, 1);
+                GamePanel.setComponentZOrder(Beams.Beam, 1);
+                GamePanel.setComponentZOrder(Beams.ShootingArea, 1);
+                Beams.Shooter.setVisible(true);
+                hasRun2 = true;
+
+                if (!Beams.spawn){
+                    Beams.spawn = true;
+                    ShooterSpawnDelay.start();
+                }
+
+                if (!Beams.isShooting) {
+                    Beams.ShooterTimer.start();
+                }
+            }
+        } else {
+            hasRun2 = false;
+        }
+        if (MF.seconds != 0 && MF.seconds % 15 == 0) {
+            if (!hasRun3) {
+                GamePanel.add(Sniper.Sniper);
+                GamePanel.add(Sniper.Bullet);
+                GamePanel.setComponentZOrder(Sniper.Sniper, 0);
+                GamePanel.setComponentZOrder(Sniper.Bullet, 1);
+                Sniper.Sniper.setVisible(true);
+
+                hasRun3 = true;
+
+                if (!Sniper.isShooting) {
+                    Sniper.shoot(Player);
+                }
+            }
+        }
+        Sniper.Sniper.setLocation(Player.Player.getX(), Sniper.Sniper.getY());
     }
     public void generate() {
         for (int i=0;i<Map1.length;i++){
@@ -399,9 +444,14 @@ public class GamePanel implements KeyListener {
     }
     @Override
     public void keyReleased(KeyEvent e){
-
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            GamePanel.setComponentZOrder(Player.Player, 0);
+        }
     }
     @Override
     public void keyTyped(KeyEvent e){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            GamePanel.setComponentZOrder(Player.Player, 1);
+        }
     }
 }

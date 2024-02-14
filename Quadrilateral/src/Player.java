@@ -12,11 +12,11 @@ import java.util.Random;
 public class Player implements KeyListener {
     JLabel Player;
 
-    Image PlayerImage = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerImageIdle = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerWalkingRight = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-WalkingRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerWalkingLeft = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-WalkingLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerDashing = new ImageIcon("D:\\Carl2\\coding\\Quadrilateral\\Quadrilateral\\src\\Images\\Player-dash.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerImage = new ImageIcon("Quadrilateral/src/Images/Player.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerImageIdle = new ImageIcon("Quadrilateral/src/Images/Player-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingRight = new ImageIcon("Quadrilateral/src/Images/Player-WalkingRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingLeft = new ImageIcon("Quadrilateral/src/Images/Player-WalkingLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerDashing = new ImageIcon("Quadrilateral/src/Images/Player-dash.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon PlayerWalkingRightIcon = new ImageIcon(PlayerWalkingRight);
     ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerWalkingLeft);
     ImageIcon PlayerDashingIcon = new ImageIcon(PlayerDashing);
@@ -27,8 +27,11 @@ public class Player implements KeyListener {
     // Player Attributes
     int PosX = 1280/2;
     int PosY = 720/2;
+    int JumpY = 6;
     int DirX;
     int DirY;
+    int gravity = 2;
+    int prevPosY;
     static int Coins = 0;
     static int Health = 100;
     boolean isAttacking;
@@ -37,6 +40,8 @@ public class Player implements KeyListener {
     boolean vulnerability = false;
     int EnemysKilled = 0;
     Timer DodgeTime;
+
+    boolean isFalling = false;
     //
     GamePanel gamePanel;
 
@@ -56,8 +61,8 @@ public class Player implements KeyListener {
         Melee = new Melee();
         random = new Random();
 
-        Player.setBounds(800/2,700/2,50,60);
-        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        Player.setBounds(800/2,700/2,40,60);
+//        Player.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         isAttacking = false;
         isDodge = false;
@@ -75,6 +80,7 @@ public class Player implements KeyListener {
 
         int oldPosX = PosX;
         int oldPosY = PosY;
+        prevPosY = PosY;
 
         PosX = Player.getX();
         PosY = Player.getY();
@@ -82,7 +88,11 @@ public class Player implements KeyListener {
         PosX += DirX;
         PosY += DirY;
 
-        Player.setBounds(PosX, PosY, 50, 55);
+        if (isFalling) {
+            PosY += gravity;  // Apply gravity only if the player is falling
+        }
+
+        Player.setBounds(PosX, PosY, 40, 55);
 
         // Player Collides with Walls
         for (int i = 0; i < GamePanel.Walls.size(); i++) {
@@ -92,7 +102,7 @@ public class Player implements KeyListener {
             }
         }
 
-        Player.setBounds(PosX, PosY, 50, 55);
+        Player.setBounds(PosX, PosY, 40, 55);
 
         // Player Dies
         if (Health <= 0) {
@@ -130,40 +140,40 @@ public class Player implements KeyListener {
         }
 
         // Melee Attack
-        if (e.getKeyCode() == KeyEvent.VK_J && !isAttacking){
-            if (isDodge){
-                return;
-            }
-
-            isAttacking = true;
-            Melee.Melee.setVisible(true);
-            if (DirX == 3){
-                Melee.Melee.setBounds(PosX+15,PosY-7,20,25);
-            }
-            if (DirX == -3){
-                Melee.Melee.setBounds(PosX-25,PosY-7,20,25);
-            }
-            if (DirY == 3){
-                Melee.Melee.setBounds(PosX-7,PosY+15,25,20);
-            }
-            if (DirY == -3){
-                Melee.Melee.setBounds(PosX-7,PosY-25,25,20);
-            }
-
-            // Error Checking
-            if (DirX == 0 && DirY == 0){
-                Melee.Melee.setBounds(PosX+15,PosY-7,20,25);
-            }
-
-            Timer timer = new Timer(100, KeyEvent -> {
-                Melee.Melee.setBounds(1600,1600,20,25);
-                Melee.Melee.setVisible(false);
-                isAttacking = false;
-            });
-            timer.setRepeats(false);
-            timer.start();
-        }
-        // Dash
+//        if (e.getKeyCode() == KeyEvent.VK_J && !isAttacking){
+//            if (isDodge){
+//                return;
+//            }
+//
+//            isAttacking = true;
+//            Melee.Melee.setVisible(true);
+//            if (DirX == 3){
+//                Melee.Melee.setBounds(PosX+15,PosY-7,20,25);
+//            }
+//            if (DirX == -3){
+//                Melee.Melee.setBounds(PosX-25,PosY-7,20,25);
+//            }
+//            if (DirY == 3){
+//                Melee.Melee.setBounds(PosX-7,PosY+15,25,20);
+//            }
+//            if (DirY == -3){
+//                Melee.Melee.setBounds(PosX-7,PosY-25,25,20);
+//            }
+//
+//            // Error Checking
+//            if (DirX == 0 && DirY == 0){
+//                Melee.Melee.setBounds(PosX+15,PosY-7,20,25);
+//            }
+//
+//            Timer timer = new Timer(100, KeyEvent -> {
+//                Melee.Melee.setBounds(1600,1600,20,25);
+//                Melee.Melee.setVisible(false);
+//                isAttacking = false;
+//            });
+//            timer.setRepeats(false);
+//            timer.start();
+//        }
+//         Dash
         if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && isSpacebarSpammed){
             isSpacebarSpammed = false;
             isDodge = true;
