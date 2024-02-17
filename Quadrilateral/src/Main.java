@@ -105,7 +105,8 @@ public class Main implements Runnable {
                 GamePanel.HealthLabel.setText("Health: " + Player.Health);
                 Frame.repaint();
 
-//                if ((seconds + 2) % 120 == 0){
+//                if ((seconds + 2) % 10 == 0){
+//                    Frame.add(ShopPanel.ShopPanel);
 //                    ShopPanel.ShopPanel.setVisible(true);
 //                    GamePanel.GamePanel.setVisible(false);
 //                    IGTimer.stop();

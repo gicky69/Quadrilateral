@@ -145,13 +145,13 @@ public class GamePanel implements KeyListener {
         GamePanel.add(CoinDrops.CoinDrops);
         CoinDrops.CoinDrops.setIcon(CoinIdleIcon);
 
-        BombRandomSpawn = new Timer(300, e -> {
+        BombRandomSpawn = new Timer(500, e -> {
             BombTimer -= 1;
             System.out.println(BombTimer);
             GamePanel.setComponentZOrder(Bomb.Bomb, 1);
 
             if (BombTimer <= 0){
-                speed = rand.nextInt(6) + 2;
+                speed = rand.nextInt(5) + 2;
                 Bomb.randomSpawn();
                 BombTimer = 10;
             }

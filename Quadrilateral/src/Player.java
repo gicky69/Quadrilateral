@@ -165,7 +165,7 @@ public class Player implements KeyListener {
             Player.setIcon(PlayerJumpinngIcon);
             Player.setBounds(Player.getX(), Player.getY(), 64, 64);
 
-            DodgeTime = new Timer(450, e2 ->{
+            DodgeTime = new Timer(400, e2 ->{
 
                 isDodge = false;
                 Player.setIcon(PlayerIcon);
