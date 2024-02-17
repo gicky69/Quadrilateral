@@ -1,15 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class MainMenu {
+public class    MainMenu {
     JPanel MainMenu;
     JButton Play;
+    Image WKeyImage = new ImageIcon("Quadrilateral/src/Images/pixil-gif-drawing-2.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image AKeyImage = new ImageIcon("Quadrilateral/src/Images/pixil-gif-drawingA.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    ImageIcon AKeyIcon = new ImageIcon(AKeyImage);
+    ImageIcon WKeyIcon = new ImageIcon(WKeyImage);
     JButton HowToPlay;
     JButton Exit;
 
     public MainMenu() {
         MainMenu = new JPanel();
         Play = new JButton("Play");
+        Play.setIcon(WKeyIcon);
         HowToPlay = new JButton("How To Play");
         Exit = new JButton("Exit");
 
