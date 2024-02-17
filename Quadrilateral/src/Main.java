@@ -2,12 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main implements Runnable {
+
     JFrame Frame;
+    JLabel Bounds1;
+    JLabel Bounds2;
+    JLabel Bounds3;
+    JLabel Bounds4;
 
     // Main Menu
     MainMenu MainMenu;
 
     GamePanel GamePanel;
+    Player Player;
     Thread GameThread;
     Shop ShopPanel;
 
@@ -20,6 +26,12 @@ public class Main implements Runnable {
 
     public Main() {
         Frame = new JFrame();
+        Player = new Player();
+
+        Bounds1 = new JLabel();
+        Bounds2 = new JLabel();
+        Bounds3 = new JLabel();
+        Bounds4 = new JLabel();
 
         // Main Menu
         MainMenu = new MainMenu();
@@ -30,16 +42,25 @@ public class Main implements Runnable {
         PauseMenu = new JPanel();
         PauseL = new JLabel("Paused");
 
+
         // Timer
         IGTimerP = new JPanel();
         IGTimerL = new JLabel();
 
-        Frame.setTitle("Super Quadrilateral");
+        Frame.setTitle("Dodge It!");
         Frame.setSize(1280, 720);
         Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Frame.setLayout(null);
         Frame.setLocationRelativeTo(null);
         Frame.setResizable(false);
+
+        Bounds1.setBounds(290,0,800,10);
+
+        Bounds2.setBounds(260,20,10,800);
+
+        Bounds3.setBounds(1085,20,10,800);
+
+        Bounds4.setBounds(290,660,800,10);
 
         PauseMenu.setBounds(540, 25, 200,650);
         PauseMenu.setLayout(null);
@@ -54,6 +75,7 @@ public class Main implements Runnable {
         IGTimerP.setBounds(640,0,100,50);
         IGTimerP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         IGTimerP.setBackground(Color.GRAY);
+        Frame.getContentPane().setBackground(new Color(80,88,109));
         IGTimerL.setText("");
         IGTimerP.add(IGTimerL);
 
@@ -64,15 +86,21 @@ public class Main implements Runnable {
         if (MainMenu.Play.isEnabled()) {
             MainMenu.Play.addActionListener(e -> {
                 Frame.remove(MainMenu.MainMenu);
+                Frame.add(Bounds4);
+                Frame.add(Bounds1);
+                Frame.add(Bounds2);
+                Frame.add(Bounds3);
+
+                Frame.add(Player.Player);
+                Frame.add(Player.PlayerHitbox);
                 Frame.add(IGTimerP);
                 Frame.add(PauseMenu);
                 Frame.add(GamePanel.GamePanel);
                 Frame.add(GamePanel.CoinsPanel);
                 Frame.setVisible(true);
-                GamePanel.GamePanel.requestFocusInWindow();
-                GamePanel.GamePanel.setFocusable(true);
-
-
+                Frame.addKeyListener(Player);
+                Frame.setFocusable(true);
+                Frame.requestFocusInWindow();
                 start();
             });
         }
@@ -99,8 +127,9 @@ public class Main implements Runnable {
             if (!GamePanel.isPaused){
                 IGTimer.start();
                 PauseMenu.setVisible(false);
-
+                Player.update(this);
                 GamePanel.update(this);
+
                 GamePanel.CoinsLabel.setText("Coins: " + Player.Coins);
                 GamePanel.HealthLabel.setText("Health: " + Player.Health);
                 Frame.repaint();

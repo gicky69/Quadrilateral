@@ -1,7 +1,12 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +15,6 @@ public class GamePanel implements KeyListener {
     JPanel GamePanel;
 
     // Colors
-    Color BGColor = new Color(45, 50, 80);
 
     boolean isPaused = false;
     Player Player;
@@ -89,18 +93,30 @@ public class GamePanel implements KeyListener {
     JLabel CoinsLabel;
     JLabel HealthLabel;
 
+    // SFX
+    String csfx1 = "Quadrilateral/src/Sounds/clink10.wav";
+    String csfx2 = "Quadrilateral/src/Sounds/clink11.wav";
+    String csfx3 = "Quadrilateral/src/Sounds/clink12.wav";
+    String ccsfx1 = "Quadrilateral/src/Sounds/CSFX3.wav";
+
+    int csfx = 0;
+    //
+
     JPanel MapPanel;
 
     // Coins
     CoinDrops CoinDrops;
     int TimerCoins;
     Timer CoinsDelay;
+    //
+
+    //  Bomb
+    int BombDuration = 2720;
 
     // Multiplier
     int speed = 2;
 
     // Enemy
-    Enemy Enemy;
     Beams Beams;
     Sniper Sniper;
     Timer ShooterSpawnDelay;
@@ -109,7 +125,7 @@ public class GamePanel implements KeyListener {
     public GamePanel() {
         GamePanel = new JPanel();
         CoinDrops = new CoinDrops();
-        Player = new Player(this);
+        Player = new Player();
 //        Enemy = new Enemy();
         MapPanel = new JPanel();
         Sniper = new Sniper();
@@ -123,11 +139,12 @@ public class GamePanel implements KeyListener {
         rand = new Random();
 
         GamePanel.setBounds(290,30,800,670);
+        GamePanel.setBackground(new Color(80,88,109));
         GamePanel.setLayout(null);
 
-        GamePanel.add(Player.Player);
-        GamePanel.setComponentZOrder(Player.Player, 0);
-        GamePanel.add(Player.Melee.Melee);
+//        GamePanel.add(Player.Player);
+//        GamePanel.add(Player.PlayerHitbox);
+//        GamePanel.setComponentZOrder(Player.Player, 0);
         GamePanel.addKeyListener(this);
         GamePanel.addKeyListener(Player);
 
@@ -145,16 +162,11 @@ public class GamePanel implements KeyListener {
         GamePanel.add(CoinDrops.CoinDrops);
         CoinDrops.CoinDrops.setIcon(CoinIdleIcon);
 
-        BombRandomSpawn = new Timer(500, e -> {
-            BombTimer -= 1;
-            System.out.println(BombTimer);
+        BombRandomSpawn = new Timer(BombDuration, e -> {
             GamePanel.setComponentZOrder(Bomb.Bomb, 1);
+            speed = rand.nextInt(5) + 2;
+            Bomb.randomSpawn();
 
-            if (BombTimer <= 0){
-                speed = rand.nextInt(5) + 2;
-                Bomb.randomSpawn();
-                BombTimer = 10;
-            }
         });
 
         Timer CoinIdleDelay = new Timer(1350, e -> {
@@ -177,6 +189,23 @@ public class GamePanel implements KeyListener {
 
                 CoinDrops.CoinDrops.setBounds(cx, cy, 64, 64);
                 CoinDrops.CoinDrops.setVisible(true);
+
+                if (CoinDrops.CoinDrops.isVisible()){
+                    csfx++;
+                    if (csfx >= 3){
+                        csfx = 0;
+                    }
+
+                    if (csfx == 0){
+                        PlayMusic(csfx1);
+                    }
+                    else if (csfx == 1){
+                        PlayMusic(csfx2);
+                    }
+                    else if (csfx == 2){
+                        PlayMusic(csfx3);
+                    }
+                }
 
                 GamePanel.setComponentZOrder(CoinDrops.CoinDrops, 1);
                 GamePanel.revalidate();
@@ -289,7 +318,6 @@ public class GamePanel implements KeyListener {
         GamePanel.repaint();
     }
     public void update(Main MF) {
-        Player.update(this);
 //        Enemy.update(Player);
         Beams.update(this);
         Sniper.update();
@@ -312,9 +340,13 @@ public class GamePanel implements KeyListener {
 //        }
 
         if (Player.Player.getBounds().intersects(CoinDrops.CoinDrops.getBounds()) && !CoinDrops.isCollected) {
+            System.out.println("Coin Collected");
             GamePanel.remove(CoinDrops.CoinDrops);
             CoinDrops.CoinDrops.setVisible(false);
             CoinDrops.isCollected = true;
+            if (CoinDrops.isCollected){
+                PlayMusic(ccsfx1);
+            }
 
             TimerCoins = 10;
 
@@ -323,7 +355,7 @@ public class GamePanel implements KeyListener {
             CoinsDelay.start();
         }
         // Bomb Explored Anywhere, Starts at 25 secs
-        if (MF.seconds != 0 && MF.seconds % 20 == 0) {
+        if (MF.seconds != 0 && MF.seconds % 5 == 0) {
             if (!hasRun) {
                 if (!BombRandomSpawn.isRunning()) {
                     GamePanel.add(Bomb.Bomb);
@@ -444,14 +476,31 @@ public class GamePanel implements KeyListener {
     }
     @Override
     public void keyReleased(KeyEvent e){
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            GamePanel.setComponentZOrder(Player.Player, 0);
-        }
+
     }
     @Override
     public void keyTyped(KeyEvent e){
-        if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            GamePanel.setComponentZOrder(Player.Player, 1);
+
+    }
+
+    public static void PlayMusic(String filepath) {
+        try {
+            File musicFile = new File(filepath);
+
+            if (musicFile.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-10.0f);
+                clip.start();
+            }
+            else {
+                System.out.println("File not found");
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
         }
     }
 }
