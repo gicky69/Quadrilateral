@@ -12,10 +12,16 @@ public class Main implements Runnable {
     // Main Menu
     MainMenu MainMenu;
 
+    // Game
     GamePanel GamePanel;
+    WOD WOD;
+    CoinDrops CoinDrops;
+    Bomb Bomb;
     Player Player;
     Thread GameThread;
     Shop ShopPanel;
+
+    //
 
     JPanel PauseMenu;
     JLabel PauseL;
@@ -38,9 +44,12 @@ public class Main implements Runnable {
 
         // Game
         GamePanel = new GamePanel();
+        WOD = new WOD(this);
+        CoinDrops = new CoinDrops(this);
         ShopPanel = new Shop();
         PauseMenu = new JPanel();
         PauseL = new JLabel("Paused");
+        Bomb = new Bomb();
 
 
         // Timer
@@ -91,10 +100,17 @@ public class Main implements Runnable {
                 Frame.add(Bounds2);
                 Frame.add(Bounds3);
 
+                Frame.add(WOD.WOD);
+
+                Frame.add(CoinDrops.CoinDrops);
+
+                Frame.add(Bomb.Bomb);
+
                 Frame.add(Player.Player);
                 Frame.add(Player.PlayerHitbox);
                 Frame.add(IGTimerP);
                 Frame.add(PauseMenu);
+
                 Frame.add(GamePanel.GamePanel);
                 Frame.add(GamePanel.CoinsPanel);
                 Frame.setVisible(true);
@@ -128,7 +144,14 @@ public class Main implements Runnable {
                 IGTimer.start();
                 PauseMenu.setVisible(false);
                 Player.update(this);
-                GamePanel.update(this);
+                WOD.update();
+                Bomb.BombRandomSpawn.start();
+
+                if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinDrops.getBounds())){
+                    CoinDrops.collected(this);
+                }
+
+                GamePanel.update(this, Player);
 
                 GamePanel.CoinsLabel.setText("Coins: " + Player.Coins);
                 GamePanel.HealthLabel.setText("Health: " + Player.Health);

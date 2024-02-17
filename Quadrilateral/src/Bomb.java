@@ -11,30 +11,27 @@ public class Bomb {
     int x;
     int y;
     boolean hasExploded = false;
+    int BombDuration = 2700;
+    Timer BombRandomSpawn;
 
     public Bomb() {
         Bomb = new JLabel();
         Bomb.setIcon(BombIcon);
         Rand = new Random();
+        Bomb.setVisible(true);
 
-        x = Rand.nextInt(500) + 100;
-        y = Rand.nextInt(500) + 100;
-
-        Bomb.setBounds(x,y,64,64);
-        Bomb.setVisible(false);
+        BombRandomSpawn = new Timer(BombDuration, e -> {
+            randomSpawn();
+            ((Timer)e.getSource()).stop();
+        });
     }
+
 
     public void randomSpawn() {
+        BombRandomSpawn.start();
         Bomb.setVisible(true);
-        x = Rand.nextInt(500) + 100;
-        y = Rand.nextInt(500) + 100;
+        x = Rand.nextInt(735) + 290;
+        y = Rand.nextInt(608) + 30;
         Bomb.setBounds(x,y,64,64);
-    }
-
-    public void explode() {
-        BombExplosion = new JLabel();
-        BombExplosion.setBounds(x,y,100,100);
-        BombExplosion.setVisible(true);
-        hasExploded = true;
     }
 }

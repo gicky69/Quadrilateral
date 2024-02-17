@@ -56,7 +56,6 @@ public class Player implements KeyListener {
     boolean vulnerability = false;
     boolean MovingLeft = false;
     boolean MovingRight = false;
-    int EnemysKilled = 0;
     Timer DodgeTime;
 
     boolean isFalling = false;
@@ -102,7 +101,6 @@ public class Player implements KeyListener {
 
 
     public void update(Main MF) {
-
         oldPosX = PosX;
         oldPosY = PosY;
 
@@ -115,33 +113,13 @@ public class Player implements KeyListener {
         Player.setBounds(PosX, PosY, 64, 64);
         PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
 
-        if (MF.Bounds1.getBounds().intersects(PlayerHitbox.getBounds())) {
+        if (PlayerHitbox.getBounds().intersects(MF.Bounds1.getBounds()) || PlayerHitbox.getBounds().intersects(MF.Bounds2.getBounds()) || PlayerHitbox.getBounds().intersects(MF.Bounds3.getBounds()) || PlayerHitbox.getBounds().intersects(MF.Bounds4.getBounds())) {
             PosX = oldPosX;
             PosY = oldPosY;
             Player.setBounds(PosX, PosY, 64, 64);
             PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
         }
 
-        if (MF.Bounds2.getBounds().intersects(PlayerHitbox.getBounds())) {
-            PosX = oldPosX;
-            PosY = oldPosY;
-            Player.setBounds(PosX, PosY, 64, 64);
-            PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
-        }
-
-        if (MF.Bounds3.getBounds().intersects(PlayerHitbox.getBounds())) {
-            PosX = oldPosX;
-            PosY = oldPosY;
-            Player.setBounds(PosX, PosY, 64, 64);
-            PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
-        }
-
-        if (MF.Bounds4.getBounds().intersects(PlayerHitbox.getBounds())) {
-            PosX = oldPosX;
-            PosY = oldPosY;
-            Player.setBounds(PosX, PosY, 64, 64);
-            PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
-        }
 
 //        if (!isDodge) {
 //            Player.setBounds(PosX, PosY, 64, 64);
