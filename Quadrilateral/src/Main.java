@@ -4,6 +4,7 @@ import java.awt.*;
 public class Main implements Runnable {
 
     JFrame Frame;
+    JLabel CoinCount;
     JLabel Bounds1;
     JLabel Bounds2;
     JLabel Bounds3;
@@ -39,12 +40,14 @@ public class Main implements Runnable {
         Bounds3 = new JLabel();
         Bounds4 = new JLabel();
 
+        CoinCount = new JLabel();
+
         // Main Menu
         MainMenu = new MainMenu();
 
         // Game
         GamePanel = new GamePanel();
-        WOD = new WOD(this);
+        WOD = new WOD();
         CoinDrops = new CoinDrops(this);
         ShopPanel = new Shop();
         PauseMenu = new JPanel();
@@ -81,9 +84,11 @@ public class Main implements Runnable {
 
         PauseMenu.setVisible(false);
 
-        IGTimerP.setBounds(640,0,100,50);
-        IGTimerP.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        IGTimerP.setBackground(Color.GRAY);
+        CoinCount.setBounds(690,5,50,10);
+        CoinCount.setText("");
+
+        IGTimerP.setBounds(640,0,100,30);
+        IGTimerP.setBackground(new Color(80,88,109));
         Frame.getContentPane().setBackground(new Color(80,88,109));
         IGTimerL.setText("");
         IGTimerP.add(IGTimerL);
@@ -94,20 +99,23 @@ public class Main implements Runnable {
 
         if (MainMenu.Play.isEnabled()) {
             MainMenu.Play.addActionListener(e -> {
+
                 Frame.remove(MainMenu.MainMenu);
                 Frame.add(Bounds4);
                 Frame.add(Bounds1);
                 Frame.add(Bounds2);
                 Frame.add(Bounds3);
 
+                Frame.add(Player.Player);
+                Frame.add(Player.PlayerHitbox);
                 Frame.add(WOD.WOD);
 
                 Frame.add(CoinDrops.CoinDrops);
+                Frame.add(CoinDrops.CoinHitBox);
 
                 Frame.add(Bomb.Bomb);
 
-                Frame.add(Player.Player);
-                Frame.add(Player.PlayerHitbox);
+                Frame.add(CoinCount);
                 Frame.add(IGTimerP);
                 Frame.add(PauseMenu);
 
@@ -144,11 +152,27 @@ public class Main implements Runnable {
                 IGTimer.start();
                 PauseMenu.setVisible(false);
                 Player.update(this);
-                WOD.update();
                 Bomb.BombRandomSpawn.start();
+                WOD.update();
 
-                if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinDrops.getBounds())){
+                if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds())){
                     CoinDrops.collected(this);
+                    Player.Coins += 1;
+                    CoinCount.setText("" + Player.Coins);
+                }
+
+                // Player Dead
+                if (Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge && !Player.vulnerability){
+                    System.out.println("Game Over");
+                    Player.vulnerability = true;
+
+                    Timer ResetVulnerability = new Timer (1500, e -> {
+                        Player.vulnerability = false;
+                        ((Timer)e.getSource()).stop();
+                    });
+
+                    ResetVulnerability.start();
+
                 }
 
                 GamePanel.update(this, Player);

@@ -11,7 +11,7 @@ public class Bomb {
     int x;
     int y;
     boolean hasExploded = false;
-    int BombDuration = 2700;
+    int BombDuration = 2720;
     Timer BombRandomSpawn;
 
     public Bomb() {

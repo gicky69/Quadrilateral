@@ -7,9 +7,10 @@ import java.awt.*;
 public class CoinDrops {
     JPanel CoinPanel;
     JLabel CoinDrops;
-    Image CoinImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image CoinAppearImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Pop.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image CoinIdleImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    JLabel CoinHitBox;
+    Image CoinImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
+    Image CoinAppearImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Pop.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
+    Image CoinIdleImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
     ImageIcon CoinAppearIcon = new ImageIcon(CoinAppearImage);
     ImageIcon CoinIdleIcon = new ImageIcon(CoinIdleImage);
     ImageIcon CoinIcon = new ImageIcon(CoinImage);
@@ -32,15 +33,16 @@ public class CoinDrops {
     public CoinDrops(Main MF) {
         CoinPanel = new JPanel();
         CoinDrops = new JLabel();
+        CoinHitBox = new JLabel();
 
         rand = new Random();
-
-        CoinDrops.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
 
         x = rand.nextInt(735) + 290;
         y = rand.nextInt(608) + 30;
 
         CoinDrops.setBounds(x,y,64,64);
+        CoinHitBox.setBounds(x+10,y+17,28,28);
+        CoinHitBox.setBorder(BorderFactory.createLineBorder(Color.RED));
         CoinDrops.setIcon(CoinAppearIcon);
 
         CoinIdleDelay = new Timer(250, e -> {
@@ -64,6 +66,8 @@ public class CoinDrops {
         CoinIdleDelay.start();
 
         CoinDrops.setBounds(cx, cy, 64, 64);
+        CoinHitBox.setBounds(cx+10,cy+17,28,28);
+
         CoinDrops.setVisible(true);
 
         if (CoinDrops.isVisible()){

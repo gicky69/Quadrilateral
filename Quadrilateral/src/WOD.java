@@ -1,155 +1,80 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class WOD {
     JLabel WOD;
-    int a;
-    List<JLabel> WODs = new ArrayList<JLabel>();
-    int Map1[] = {
-            1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,5,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
-            6,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,
-    };
-    int WODD[] = {
-            2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,
-    };
-
-    Image WODImage = new ImageIcon("Quadrilateral/src/Images/WOD.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image WODTPImage = new ImageIcon("Quadrilateral/src/Images/WODTP.png").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image WODHEADImage = new ImageIcon("Quadrilateral/src/Images/MAPHEAD1.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    Image WODHeadImageBtm = new ImageIcon("Quadrilateral/src/Images/MAPHEAD2.gif").getImage().getScaledInstance(32,32,Image.SCALE_DEFAULT);
-    ImageIcon WODHEADIcon = new ImageIcon(WODHEADImage);
-    ImageIcon WODHeadIconBtm = new ImageIcon(WODHeadImageBtm);
-    ImageIcon WODIcon = new ImageIcon(WODImage);
-    ImageIcon WODTPIcon = new ImageIcon(WODTPImage);
-
+    Main MF;
+    ImageIcon WODIcon1 = new ImageIcon("Quadrilateral/src/Images/Walls/Wall1.gif");
+    ImageIcon WODIcon2 = new ImageIcon("Quadrilateral/src/Images/Walls/Wall2.gif");
     Random rand;
-
+    int pos;
+    int prevPos = -1;
     int speed = 2;
 
-    Main MF;
-    public WOD(Main mf) {
+    public WOD() {
         WOD = new JLabel();
-        rand = new Random();
-        this.MF = mf;
-        a = rand.nextInt(4)+1;
 
-        createWOD(a);
-        moveWOD(a);
+        rand = new Random();
+        WOD.setVisible(true);
+
+        randomSpawn();
     }
 
     public void update() {
-        moveWOD(a);
-    }
-
-    public void createWOD(int pos) {
-        for (int i=0;i<25;i++){
-            if (WODD[i] == 1) {
-                JLabel Wall = new JLabel();
-                Wall.setIcon(WODIcon);
-                Wall.setVisible(true);
-                MF.Frame.add(Wall);
-                WODs.add(Wall);
-            }
-            if (WODD[i] == 2) {
-                JLabel Wall = new JLabel();
-                Wall.setIcon(WODHEADIcon);
-                Wall.setVisible(true);
-                MF.Frame.add(Wall);
-                WODs.add(Wall);
-            }
-            if (WODD[i] == 3) {
-                JLabel Wall = new JLabel();
-                Wall.setIcon(WODHeadIconBtm);
-                Wall.setVisible(true);
-                MF.Frame.add(Wall);
-                WODs.add(Wall);
-            }
-
-            switch(pos) {
-                case 1:
-                    WODs.get(i).setBounds(290, (i*32), 32, 32);
-                    break;
-                case 2:
-                    WODs.get(i).setBounds(290 + (i*32), 30, 32, 32);
-                    break;
-                case 3:
-                    WODs.get(i).setBounds(800, 30 + (i*32), 32, 32);
-                    break;
-                case 4:
-                    WODs.get(i).setBounds(290 + (i*32), 670, 32, 32);
-                    break;
-            }
-            moveWOD(pos);
-        }
-
-        MF.Frame.revalidate();
-        MF.Frame.repaint();
-    }
-
-    public void moveWOD(int lvl) {
-        for (int i=WODs.size()-1;i>=0;i--){
-            JLabel wod = WODs.get(i);
-
-            switch(lvl) {
-                case 1:
-                    wod.setLocation(wod.getX() + speed, wod.getY());
-                    break;
-                case 2:
-                    wod.setIcon(WODTPIcon);
-                    wod.setLocation(wod.getX(), wod.getY() + speed);
-                    break;
-                case 3:
-                    wod.setLocation(wod.getX() - speed, wod.getY());
-                    break;
-                case 4:
-                    wod.setIcon(WODTPIcon);
-                    wod.setLocation(wod.getX(), wod.getY() - speed);
-                    break;
-            }
-
-            // Check if the WOD has reached the end of the panel
-            if      ((lvl == 1 && wod.getX() > 850) ||
-                    (lvl == 2 && wod.getY() > 670) ||
-                    (lvl == 3 && wod.getX() < 0) ||
-                    (lvl == 4 && wod.getY() < 30)) {
-                wod.setLocation(-500, 0);
-                MF.Frame.remove(wod);
-                wod.setVisible(false);
-                WODs.remove(wod); // Remove wod from WODs list
-                WODs.clear();
-                // randomize lvl
-                int b = rand.nextInt(4)+1;
-                int time = rand.nextInt(4001) + 50;
-                Timer createWod = new Timer(time, e -> {
-                    createWOD(b);
-                    ((Timer)e.getSource()).stop();
-                });
-                createWod.start();
+        switch (pos) {
+            case 1:
+                WOD.setBounds(WOD.getX() + speed, WOD.getY(), 32, 660);
+                WOD.setIcon(WODIcon1);
                 break;
-            }
+            case 2:
+                WOD.setBounds(WOD.getX(), WOD.getY() - speed, 820, 32);
+                WOD.setIcon(WODIcon2);
+                break;
+            case 3:
+                WOD.setBounds(WOD.getX() - speed, WOD.getY(), 32, 660);
+                WOD.setIcon(WODIcon1);
+                break;
+            case 4:
+                WOD.setBounds(WOD.getX(), WOD.getY() + speed, 820, 32);
+                WOD.setIcon(WODIcon2);
+                break;
         }
-        MF.Frame.revalidate();
-        MF.Frame.repaint();
+
+        if (
+                pos == 1 && WOD.getX() > 1250
+                || pos == 3 && WOD.getX() < 100
+                || pos == 2 && WOD.getY() < 0
+                || pos == 4 && WOD.getY() > 660) {
+            randomSpawn();
+        }
+    }
+
+    public void create(int pos) {
+        switch (pos) {
+            case 1:
+                WOD.setBounds(270,15,32,660);
+                break;
+            case 2:
+                WOD.setBounds(278,630,820,32);
+                break;
+            case 3:
+                WOD.setBounds(1200,10,32,660);
+                break;
+            case 4:
+                WOD.setBounds(278,0,820,32);
+                break;
+        }
+    }
+
+    public void randomSpawn() {
+        do {
+            pos = rand.nextInt(4) + 1;
+        } while (pos == prevPos);
+
+        pos = rand.nextInt(4) + 1;
+        prevPos = pos;
+        System.out.println(pos);
+        create(pos);
     }
 }

@@ -194,22 +194,6 @@ public class GamePanel implements KeyListener {
         } else {
             hasRun2 = false;
         }
-//        if (MF.seconds != 0 && MF.seconds % 15 == 0) {
-//            if (!hasRun3) {
-//                GamePanel.add(Sniper.Sniper);
-//                GamePanel.add(Sniper.Bullet);
-//                GamePanel.setComponentZOrder(Sniper.Sniper, 0);
-//                GamePanel.setComponentZOrder(Sniper.Bullet, 1);
-//                Sniper.Sniper.setVisible(true);
-//
-//                hasRun3 = true;
-//
-//                if (!Sniper.isShooting) {
-//                    Sniper.shoot(player);
-//                }
-//            }
-//        }
-//        Sniper.Sniper.setLocation(player.Player.getX(), Sniper.Sniper.getY());
     }
     public void generate() {
         for (int i=0;i<Map1.length;i++){

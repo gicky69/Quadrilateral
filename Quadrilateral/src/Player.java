@@ -87,7 +87,7 @@ public class Player implements KeyListener {
         Player.setLayout(null);
         Player.setVisible(true);
 
-        DodgeTime = new Timer(650, e2 ->{
+        DodgeTime = new Timer(550, e2 ->{
             isDodge = false;
             Player.setIcon(PlayerIcon);
         });
@@ -120,11 +120,6 @@ public class Player implements KeyListener {
             PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
         }
 
-
-//        if (!isDodge) {
-//            Player.setBounds(PosX, PosY, 64, 64);
-//            PlayerHitbox.setBounds(PosX, PosY, 32, 32);
-//        }
         if (MovingLeft && !isDodge) {
             Player.setIcon(PlayerMovingLeftIcon);
         }

@@ -5,6 +5,10 @@ import java.util.Random;
 public class Beams {
     JLabel Shooter;
     JLabel Beam;
+    Image LaserBeamImg1 = new ImageIcon("Quadrilateral/src/Images/beams/laser.gif").getImage().getScaledInstance(350,32,Image.SCALE_DEFAULT);
+    Image LaserBeamImg2 = new ImageIcon("Quadrilateral/src/Images/beams/laserr.gif").getImage().getScaledInstance(350,32,Image.SCALE_DEFAULT);
+    ImageIcon LaserBeamIcon1 = new ImageIcon(LaserBeamImg1);
+    ImageIcon LaserBeamIcon2 = new ImageIcon(LaserBeamImg2);
     JLabel ShootingArea;
 
     int x;
@@ -96,6 +100,7 @@ public class Beams {
                 BeamTimer = new Timer(700, e -> {
                     Beam.setVisible(true);
                     Beam.setBounds(Shooter.getX()+32,Shooter.getY(), 350, 32);
+                    Beam.setIcon(LaserBeamIcon1);
 //                    if (Beam.getX() > 800) {
 //                        BeamTimer.stop();
 //                        Beam.setVisible(false);
@@ -108,6 +113,7 @@ public class Beams {
                 BeamTimer = new Timer(700, e -> {
                     Beam.setVisible(true);
                     Beam.setBounds(Shooter.getX()-350,Shooter.getY(), 350, 32);
+                    Beam.setIcon(LaserBeamIcon2);
 //                    if (Beam.getX() < 0) {
 //                        BeamTimer.stop();
 //                        Beam.setVisible(false);
