@@ -14,15 +14,14 @@ import javax.sound.sampled.*;
 public class Player implements KeyListener {
     JLabel Player;
     JLabel PlayerHitbox;
-    Image PlayerImage = new ImageIcon("Quadrilateral/src/Images/Slime.png").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerImageIdle = new ImageIcon("Quadrilateral/src/Images/Player-Idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerWalkingRight = new ImageIcon("Quadrilateral/src/Images/Slime-MoveRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerWalkingLeft = new ImageIcon("Quadrilateral/src/Images/Slime-MoveLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerDashing = new ImageIcon("Quadrilateral/src/Images/Player-dash.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image PlayerJumpingImage = new ImageIcon("Quadrilateral/src/Images/Slime-Jump.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    JLabel NewEnemy;
+    Image PlayerImage = new ImageIcon("Quadrilateral/src/Images/Player-Idlet.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerImageIdle = new ImageIcon("Quadrilateral/src/Images/Player-Idlet.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingRight = new ImageIcon("Quadrilateral/src/Images/Player-MoveRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerWalkingLeft = new ImageIcon("Quadrilateral/src/Images/Player-MoveLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerJumpingImage = new ImageIcon("Quadrilateral/src/Images/Player-Jump.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon PlayerWalkingRightIcon = new ImageIcon(PlayerWalkingRight);
     ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerWalkingLeft);
-    ImageIcon PlayerDashingIcon = new ImageIcon(PlayerDashing);
     ImageIcon PlayerJumpinngIcon = new ImageIcon(PlayerJumpingImage);
     ImageIcon PlayerIcon = new ImageIcon(PlayerImage);
     ImageIcon PlayerIconIdle = new ImageIcon(PlayerImageIdle);
@@ -50,6 +49,7 @@ public class Player implements KeyListener {
     static int Health = 100;
     boolean isDodge;
     boolean isSpacebarSpammed = false;
+    boolean hasEnemySpawned = false;
     boolean isDead = false;
     boolean MovingLeft = false;
     boolean MovingRight = false;
@@ -61,6 +61,9 @@ public class Player implements KeyListener {
     public Player() {
         Player = new JLabel();
         PlayerHitbox = new JLabel();
+        NewEnemy = new JLabel();
+        NewEnemy.setVisible(false);
+
         Player.setHorizontalAlignment(JLabel.CENTER);
         Player.setVerticalAlignment(JLabel.CENTER);
         Player.setIcon(PlayerIcon);
@@ -75,7 +78,7 @@ public class Player implements KeyListener {
         Player.setLayout(null);
         Player.setVisible(true);
 
-        DodgeTime = new Timer(430, e2 ->{
+        DodgeTime = new Timer(550, e2 ->{
             isDodge = false;
             Player.setIcon(PlayerIcon);
         });
@@ -89,6 +92,22 @@ public class Player implements KeyListener {
 
 
     public void update(Main MF) {
+        if (Coins == 15 && !hasEnemySpawned) {
+            NewEnemy.setVisible(true);
+            if (NewEnemy.isVisible()) {
+                System.out.println("+ enemies");
+                NewEnemy.setText("+ sniper");
+                NewEnemy.setBounds(Player.getX()+32, Player.getY()-15, 20, 10);
+
+                Timer NewEnemyTimer = new Timer(2000, e -> {
+                    NewEnemy.setVisible(false);
+                    ((Timer)e.getSource()).stop();
+                });
+                NewEnemyTimer.start();
+            }
+            hasEnemySpawned = true; // Set the flag to true after the enemy has spawned
+        }
+
         oldPosX = PosX;
         oldPosY = PosY;
 
@@ -99,7 +118,7 @@ public class Player implements KeyListener {
         PosY += DirY;
 
         Player.setBounds(PosX, PosY, 64, 64);
-        PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
+        PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
 
         if (    PlayerHitbox.getBounds().intersects(MF.Bounds1.getBounds()) ||
                 PlayerHitbox.getBounds().intersects(MF.Bounds2.getBounds()) ||
@@ -109,7 +128,7 @@ public class Player implements KeyListener {
             PosX = oldPosX;
             PosY = oldPosY;
             Player.setBounds(PosX, PosY, 64, 64);
-            PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
+            PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
         }
 
         if (MovingLeft && !isDodge) {

@@ -7,8 +7,8 @@ import java.util.Random;
 public class Sniper {
     JLabel Sniper;
     JLabel Bullet;
-    Image SniperImage = new ImageIcon("Quadrilateral/src/Images/Skell-atk.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image BulletImage = new ImageIcon("Quadrilateral/src/Images/Bone.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image SniperImage = new ImageIcon("Quadrilateral/src/Images/Shooter.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image BulletImage = new ImageIcon("Quadrilateral/src/Images/Bone.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
     ImageIcon BulletIcon = new ImageIcon(BulletImage);
     ImageIcon SniperIcon = new ImageIcon(SniperImage);
     int Sx;
@@ -41,7 +41,7 @@ public class Sniper {
         ShooterTimer = new Timer(1000, e -> {
             if (Sniper.isVisible()){
                 shoots = true;
-                Bullet.setBounds(Sniper.getX(), Sniper.getY(), 64, 64);
+                Bullet.setBounds(Sniper.getX(), Sniper.getY(), 48, 48);
                 Bullet.setIcon(BulletIcon);
                 Bullet.setVisible(true);
                 ((Timer)e.getSource()).stop();

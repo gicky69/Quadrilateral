@@ -5,34 +5,39 @@ import java.util.Random;
 public class Bomb {
     JLabel Bomb;
     Image BombImage = new ImageIcon("Quadrilateral/src/Images/Bomb.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image ExplosionImage = new ImageIcon("Quadrilateral/src/Images/Explosion.gif").getImage().getScaledInstance(192,192,Image.SCALE_DEFAULT);
+    ImageIcon ExplosionIcon = new ImageIcon(ExplosionImage);
     ImageIcon BombIcon = new ImageIcon(BombImage);
     JLabel BombExplosion;
+    JLabel BombHitbox;
     Random Rand;
     int x;
     int y;
     boolean hasExploded = false;
     boolean start = false;
-    int BombDuration = 2750;
+    int BombDuration = 2890;
     Timer BombRandomSpawn;
     Timer ExplodeTimer;
 
     public Bomb() {
         Bomb = new JLabel();
         BombExplosion = new JLabel();
-        BombExplosion.setBorder(BorderFactory.createLineBorder(Color.RED));
+        BombHitbox = new JLabel();
+
         BombExplosion.setVisible(false);
         Bomb.setIcon(BombIcon);
         Rand = new Random();
         Bomb.setVisible(true);
 
-        Timer delay = new Timer(1500, e2 -> {
+        Timer delay = new Timer(1200, e2 -> {
             BombExplosion.setVisible(false);
             hasExploded = false;
             ((Timer)e2.getSource()).stop();
         });
 
 
-        ExplodeTimer = new Timer(2250, e -> {
+        ExplodeTimer = new Timer(2680, e -> {
+            BombExplosion.setIcon(ExplosionIcon);
             BombExplosion.setVisible(true);
             hasExploded = true;
             delay.start();
@@ -57,6 +62,7 @@ public class Bomb {
     }
 
     public void update() {
+        BombHitbox.setBounds(Bomb.getX()-55, Bomb.getY()-50, Bomb.getWidth()+100, Bomb.getHeight()+95);
         if (hasExploded) {
             BombExplosion.setVisible(true);
         }
@@ -79,7 +85,7 @@ public class Bomb {
             x = Rand.nextInt(735) + 290;
             y = Rand.nextInt(608) + 30;
             Bomb.setBounds(x,y,64,64);
-            BombExplosion.setBounds(Bomb.getX()-64, Bomb.getY()-48, Bomb.getWidth()+128, Bomb.getHeight()+128);
+            BombExplosion.setBounds(Bomb.getX()-64, Bomb.getY()-64, Bomb.getWidth()+128, Bomb.getHeight()+128);
         }
     }
 }

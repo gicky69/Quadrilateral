@@ -115,6 +115,7 @@ public class Main implements Runnable {
                 Frame.add(Bounds2);
                 Frame.add(Bounds3);
 
+                Frame.add(Player.NewEnemy);
                 Frame.add(Player.Player);
                 Frame.add(Player.PlayerHitbox);
                 Frame.add(WOD.Indicator);
@@ -129,6 +130,7 @@ public class Main implements Runnable {
                 Frame.add(CoinDrops.CoinDrops);
                 Frame.add(CoinDrops.CoinHitBox);
 
+                Frame.add(Bomb.BombHitbox);
                 Frame.add(Bomb.BombExplosion);
                 Frame.add(Bomb.Bomb);
 
@@ -169,7 +171,7 @@ public class Main implements Runnable {
                     IGTimer.start();
                     PauseMenu.setVisible(false);
                     Player.update(this);
-                    if (seconds / 10 == 1){
+                    if (seconds / 1 == 1){
                         Bomb.start = true;
                     }
 
@@ -195,7 +197,7 @@ public class Main implements Runnable {
                     // Player Dead
 //                    if (
 //                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
-//                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombExplosion.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
+//                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
 //                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())) {
 //                        Player.isDead = true;
 //                    }

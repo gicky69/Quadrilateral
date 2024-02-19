@@ -8,12 +8,14 @@ public class CoinDrops {
     JPanel CoinPanel;
     JLabel CoinDrops;
     JLabel CoinHitBox;
-    Image CoinImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
-    Image CoinAppearImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Pop.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
-    Image CoinIdleImage = new ImageIcon("Quadrilateral/src/Images/Smoke-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
+    Image CoinImage = new ImageIcon("Quadrilateral/src/Images/Coins-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
+    Image CoinAppearImage = new ImageIcon("Quadrilateral/src/Images/Coins-Appear.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
+    Image CoinIdleImage = new ImageIcon("Quadrilateral/src/Images/Coins-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
     ImageIcon CoinAppearIcon = new ImageIcon(CoinAppearImage);
     ImageIcon CoinIdleIcon = new ImageIcon(CoinIdleImage);
     ImageIcon CoinIcon = new ImageIcon(CoinImage);
+
+    int CoinGifDuration = 510;
 
     // SFX
     String csfx1 = "Quadrilateral/src/Sounds/clink10.wav";
@@ -41,11 +43,11 @@ public class CoinDrops {
         y = rand.nextInt(608) + 30;
 
         CoinDrops.setBounds(x,y,64,64);
-        CoinHitBox.setBounds(x+10,y+17,28,28);
+        CoinHitBox.setBounds(x+15,y+23,18,20);
 //        CoinHitBox.setBorder(BorderFactory.createLineBorder(Color.RED));
         CoinDrops.setIcon(CoinAppearIcon);
 
-        CoinIdleDelay = new Timer(250, e -> {
+        CoinIdleDelay = new Timer(CoinGifDuration, e -> {
             CoinDrops.setIcon(CoinIdleIcon);
             ((Timer)e.getSource()).stop();
         });
