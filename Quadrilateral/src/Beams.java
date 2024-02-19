@@ -100,7 +100,7 @@ public class Beams {
                 BeamTimer = new Timer(700, e -> {
                     Beam.setVisible(true);
                     Beam.setBounds(Shooter.getX()+32,Shooter.getY(), 350, 32);
-                    Beam.setIcon(LaserBeamIcon1);
+                    Beam.setIcon(LaserBeamIcon2);
 //                    if (Beam.getX() > 800) {
 //                        BeamTimer.stop();
 //                        Beam.setVisible(false);
@@ -113,7 +113,7 @@ public class Beams {
                 BeamTimer = new Timer(700, e -> {
                     Beam.setVisible(true);
                     Beam.setBounds(Shooter.getX()-350,Shooter.getY(), 350, 32);
-                    Beam.setIcon(LaserBeamIcon2);
+                    Beam.setIcon(LaserBeamIcon1);
 //                    if (Beam.getX() < 0) {
 //                        BeamTimer.stop();
 //                        Beam.setVisible(false);

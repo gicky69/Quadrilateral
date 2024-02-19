@@ -12,16 +12,17 @@ public class Main implements Runnable {
 
     // Main Menu
     MainMenu MainMenu;
+    EndPanel EndPanel;
 
     // Game
     GamePanel GamePanel;
     WOD WOD;
     CoinDrops CoinDrops;
     Bomb Bomb;
+    Beams Beam;
+    Sniper Sniper;
     Player Player;
     Thread GameThread;
-    Shop ShopPanel;
-
     //
 
     JPanel PauseMenu;
@@ -49,10 +50,15 @@ public class Main implements Runnable {
         GamePanel = new GamePanel();
         WOD = new WOD();
         CoinDrops = new CoinDrops(this);
-        ShopPanel = new Shop();
         PauseMenu = new JPanel();
         PauseL = new JLabel("Paused");
         Bomb = new Bomb();
+        Sniper = new Sniper(Player);
+        Beam = new Beams();
+        //
+
+        // End Panel
+        EndPanel = new EndPanel();
 
 
         // Timer
@@ -101,6 +107,9 @@ public class Main implements Runnable {
             MainMenu.Play.addActionListener(e -> {
 
                 Frame.remove(MainMenu.MainMenu);
+
+                Frame.add(EndPanel.EndPanel);
+
                 Frame.add(Bounds4);
                 Frame.add(Bounds1);
                 Frame.add(Bounds2);
@@ -108,11 +117,19 @@ public class Main implements Runnable {
 
                 Frame.add(Player.Player);
                 Frame.add(Player.PlayerHitbox);
+                Frame.add(WOD.Indicator);
                 Frame.add(WOD.WOD);
+
+                Frame.add(Sniper.Bullet);
+
+//                Frame.add(Beam.Shooter);
+//                Frame.add(Beam.Beam);
+                Frame.add(Sniper.Sniper);
 
                 Frame.add(CoinDrops.CoinDrops);
                 Frame.add(CoinDrops.CoinHitBox);
 
+                Frame.add(Bomb.BombExplosion);
                 Frame.add(Bomb.Bomb);
 
                 Frame.add(CoinCount);
@@ -120,7 +137,6 @@ public class Main implements Runnable {
                 Frame.add(PauseMenu);
 
                 Frame.add(GamePanel.GamePanel);
-                Frame.add(GamePanel.CoinsPanel);
                 Frame.setVisible(true);
                 Frame.addKeyListener(Player);
                 Frame.setFocusable(true);
@@ -148,48 +164,54 @@ public class Main implements Runnable {
 
     public void run() {
         while(true) {
-            if (!GamePanel.isPaused){
-                IGTimer.start();
-                PauseMenu.setVisible(false);
-                Player.update(this);
-                Bomb.BombRandomSpawn.start();
-                WOD.update();
+            if (!Player.isDead) {
+                if (!GamePanel.isPaused) {
+                    IGTimer.start();
+                    PauseMenu.setVisible(false);
+                    Player.update(this);
+                    if (seconds / 10 == 1){
+                        Bomb.start = true;
+                    }
 
-                if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds())){
-                    CoinDrops.collected(this);
-                    Player.Coins += 1;
-                    CoinCount.setText("" + Player.Coins);
+                    if (Player.Coins == 10) {
+                        WOD.speed = 4;
+                    }
+                    if (Player.Coins == 15) {
+                        Sniper.SpawnDelayTimer.start();
+                    }
+
+                    Sniper.update(Player);
+
+                    WOD.update();
+
+                    Bomb.update();
+
+                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.isDodge){
+                        CoinDrops.collected(this);
+                        Player.Coins += 1;
+                        CoinCount.setText("" + Player.Coins);
+                    }
+
+                    // Player Dead
+//                    if (
+//                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
+//                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombExplosion.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
+//                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())) {
+//                        Player.isDead = true;
+//                    }
+                    Frame.revalidate();
+                    Frame.repaint();
+                } else {
+                    PauseMenu.setVisible(true);
+                    IGTimer.stop();
                 }
-
-                // Player Dead
-                if (Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge && !Player.vulnerability){
-                    System.out.println("Game Over");
-                    Player.vulnerability = true;
-
-                    Timer ResetVulnerability = new Timer (1500, e -> {
-                        Player.vulnerability = false;
-                        ((Timer)e.getSource()).stop();
-                    });
-
-                    ResetVulnerability.start();
-
-                }
-
-                GamePanel.update(this, Player);
-
-                GamePanel.CoinsLabel.setText("Coins: " + Player.Coins);
-                GamePanel.HealthLabel.setText("Health: " + Player.Health);
-                Frame.repaint();
-
-//                if ((seconds + 2) % 10 == 0){
-//                    Frame.add(ShopPanel.ShopPanel);
-//                    ShopPanel.ShopPanel.setVisible(true);
-//                    GamePanel.GamePanel.setVisible(false);
-//                    IGTimer.stop();
-//                }
             } else {
-                PauseMenu.setVisible(true);
                 IGTimer.stop();
+
+                EndPanel.EndPanel.setVisible(true);
+
+                Frame.revalidate();
+                Frame.repaint();
             }
             try {
                 Thread.sleep(1000/60);

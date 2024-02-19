@@ -42,13 +42,15 @@ public class CoinDrops {
 
         CoinDrops.setBounds(x,y,64,64);
         CoinHitBox.setBounds(x+10,y+17,28,28);
-        CoinHitBox.setBorder(BorderFactory.createLineBorder(Color.RED));
+//        CoinHitBox.setBorder(BorderFactory.createLineBorder(Color.RED));
         CoinDrops.setIcon(CoinAppearIcon);
 
         CoinIdleDelay = new Timer(250, e -> {
             CoinDrops.setIcon(CoinIdleIcon);
             ((Timer)e.getSource()).stop();
         });
+
+        CoinIdleDelay.start();
 
         CoinVulnerability = new Timer(150, e -> {
             isCollected = false;
@@ -110,7 +112,7 @@ public class CoinDrops {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInput);
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-10.0f);
+                gainControl.setValue(-15.0f);
                 clip.start();
             }
             else {

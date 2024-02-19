@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class WOD {
     JLabel WOD;
+    JLabel Indicator;
     Main MF;
     ImageIcon WODIcon1 = new ImageIcon("Quadrilateral/src/Images/Walls/Wall1.gif");
     ImageIcon WODIcon2 = new ImageIcon("Quadrilateral/src/Images/Walls/Wall2.gif");
@@ -11,41 +12,70 @@ public class WOD {
     int pos;
     int prevPos = -1;
     int speed = 2;
+    boolean start = false;
+
+    Timer SpawnTimer;
+    Timer StartTimer;
 
     public WOD() {
         WOD = new JLabel();
+        Indicator = new JLabel();
+        Indicator.setBorder(BorderFactory.createLineBorder(Color.RED));
+        Indicator.setVisible(true);
 
         rand = new Random();
         WOD.setVisible(true);
+        StartTimer = new Timer(1500, e -> {
+            start = true;
+            ((Timer)e.getSource()).stop();
+        });
 
+        SpawnTimer = new Timer(2000, e -> {
+            create(pos);
+            ((Timer)e.getSource()).stop();
+            StartTimer.start();
+        });
         randomSpawn();
     }
 
     public void update() {
         switch (pos) {
             case 1:
-                WOD.setBounds(WOD.getX() + speed, WOD.getY(), 32, 660);
-                WOD.setIcon(WODIcon1);
+                Indicator.setBounds(20, 300, 30, 64);
+                if (start == true){
+                    WOD.setBounds(WOD.getX() + speed, WOD.getY(), 32, 660);
+                    WOD.setIcon(WODIcon1);
+                }
                 break;
             case 2:
-                WOD.setBounds(WOD.getX(), WOD.getY() - speed, 820, 32);
-                WOD.setIcon(WODIcon2);
+                Indicator.setBounds(650, 630, 64, 30);
+                if (start == true){
+                    WOD.setBounds(WOD.getX(), WOD.getY() - speed, 820, 32);
+                    WOD.setIcon(WODIcon2);
+                }
                 break;
             case 3:
-                WOD.setBounds(WOD.getX() - speed, WOD.getY(), 32, 660);
-                WOD.setIcon(WODIcon1);
+                Indicator.setBounds(1230, 300, 30, 64);
+                if (start == true){
+                    WOD.setBounds(WOD.getX() - speed, WOD.getY(), 32, 660);
+                    WOD.setIcon(WODIcon1);
+                }
                 break;
             case 4:
-                WOD.setBounds(WOD.getX(), WOD.getY() + speed, 820, 32);
-                WOD.setIcon(WODIcon2);
+                Indicator.setBounds(660, 10, 64, 30);
+                if (start == true){
+                    WOD.setBounds(WOD.getX(), WOD.getY() + speed, 820, 32);
+                    WOD.setIcon(WODIcon2);
+                }
                 break;
         }
 
         if (
-                pos == 1 && WOD.getX() > 1250
-                || pos == 3 && WOD.getX() < 100
-                || pos == 2 && WOD.getY() < 0
-                || pos == 4 && WOD.getY() > 660) {
+                pos == 1 && WOD.getX() > 1300
+                || pos == 3 && WOD.getX() < -32
+                || pos == 2 && WOD.getY() < -32
+                || pos == 4 && WOD.getY() > 690) {
+            start = false;
             randomSpawn();
         }
     }
@@ -53,16 +83,16 @@ public class WOD {
     public void create(int pos) {
         switch (pos) {
             case 1:
-                WOD.setBounds(270,15,32,660);
+                WOD.setBounds(-32,15,32,660);
                 break;
             case 2:
-                WOD.setBounds(278,630,820,32);
+                WOD.setBounds(278,662,820,32);
                 break;
             case 3:
-                WOD.setBounds(1200,10,32,660);
+                WOD.setBounds(1232,10,32,660);
                 break;
             case 4:
-                WOD.setBounds(278,0,820,32);
+                WOD.setBounds(278,-32,820,32);
                 break;
         }
     }
@@ -72,9 +102,7 @@ public class WOD {
             pos = rand.nextInt(4) + 1;
         } while (pos == prevPos);
 
-        pos = rand.nextInt(4) + 1;
         prevPos = pos;
-        System.out.println(pos);
-        create(pos);
+        SpawnTimer.start();
     }
 }

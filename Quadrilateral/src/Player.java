@@ -46,24 +46,14 @@ public class Player implements KeyListener {
     int oldPosY = PosY;
     int DirX;
     int DirY;
-    int gravity = 2;
-    int prevPosY;
     static int Coins = 0;
     static int Health = 100;
-    boolean isAttacking;
     boolean isDodge;
     boolean isSpacebarSpammed = false;
-    boolean vulnerability = false;
+    boolean isDead = false;
     boolean MovingLeft = false;
     boolean MovingRight = false;
     Timer DodgeTime;
-
-    boolean isFalling = false;
-    //
-    GamePanel gamePanel;
-
-    // Attacks
-    Melee Melee;
     //
     Random random;
 
@@ -75,24 +65,22 @@ public class Player implements KeyListener {
         Player.setVerticalAlignment(JLabel.CENTER);
         Player.setIcon(PlayerIcon);
 
-        Melee = new Melee();
         random = new Random();
 
         Player.setBounds(800/2,700/2,64,64);
         PlayerHitbox.setBounds(800/2,700/2,64,64);
 
-        isAttacking = false;
         isDodge = false;
 
         Player.setLayout(null);
         Player.setVisible(true);
 
-        DodgeTime = new Timer(550, e2 ->{
+        DodgeTime = new Timer(430, e2 ->{
             isDodge = false;
             Player.setIcon(PlayerIcon);
         });
         DodgeTime.setRepeats(false);
-        PlayerHitbox.setBorder(BorderFactory.createLineBorder(Color.RED));
+//        PlayerHitbox.setBorder(BorderFactory.createLineBorder(Color.RED));
 
 //        IdleTimer = new Timer(1000, e1 -> {
 //            Player.setIcon(PlayerIconIdle);
@@ -113,7 +101,11 @@ public class Player implements KeyListener {
         Player.setBounds(PosX, PosY, 64, 64);
         PlayerHitbox.setBounds(PosX+16, PosY+32, 32, 32);
 
-        if (PlayerHitbox.getBounds().intersects(MF.Bounds1.getBounds()) || PlayerHitbox.getBounds().intersects(MF.Bounds2.getBounds()) || PlayerHitbox.getBounds().intersects(MF.Bounds3.getBounds()) || PlayerHitbox.getBounds().intersects(MF.Bounds4.getBounds())) {
+        if (    PlayerHitbox.getBounds().intersects(MF.Bounds1.getBounds()) ||
+                PlayerHitbox.getBounds().intersects(MF.Bounds2.getBounds()) ||
+                PlayerHitbox.getBounds().intersects(MF.Bounds3.getBounds()) ||
+                PlayerHitbox.getBounds().intersects(MF.Bounds4.getBounds()))
+        {
             PosX = oldPosX;
             PosY = oldPosY;
             Player.setBounds(PosX, PosY, 64, 64);
@@ -229,10 +221,6 @@ public class Player implements KeyListener {
             kfxclick = false;
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_J){
-            isAttacking = false;
-        }
-
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             isSpacebarSpammed = false;
         }
@@ -248,7 +236,7 @@ public class Player implements KeyListener {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInput);
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(-10.0f);
+                gainControl.setValue(-5.0f);
                 clip.start();
             }
             else {

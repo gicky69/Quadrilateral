@@ -89,12 +89,8 @@ public class GamePanel implements KeyListener {
     Timer CoinsDelay;
     //
 
-    // Multiplier
-
-
     // Enemy
     Beams Beams;
-    Sniper Sniper;
     Timer ShooterSpawnDelay;
 
 
@@ -102,30 +98,16 @@ public class GamePanel implements KeyListener {
         GamePanel = new JPanel();
 //        Enemy = new Enemy();
         MapPanel = new JPanel();
-        Sniper = new Sniper();
 
         CoinsPanel = new JPanel();
         CoinsLabel = new JLabel();
         HealthLabel = new JLabel();
-        Bomb = new Bomb();
-        Beams = new Beams();
-
         rand = new Random();
 
         GamePanel.setBounds(290,30,800,670);
         GamePanel.setBackground(new Color(80,88,109));
         GamePanel.setLayout(null);
 
-//        GamePanel.add(Player.Player);
-//        GamePanel.add(Player.PlayerHitbox);
-//        GamePanel.setComponentZOrder(Player.Player, 0);
-        GamePanel.addKeyListener(this);
-
-        // CoinsPanel
-        CoinsPanel.setBounds(0,0,100,50);
-        CoinsPanel.setVisible(true);
-
-        CoinsLabel.setBounds(0,30,100,30);
 //        CoinsLabel.setText("Coins : " + player.Coins);
 
         HealthLabel.setBounds(0,0,100,30);
@@ -140,11 +122,8 @@ public class GamePanel implements KeyListener {
            Beams.spawn();
         });
 
-        Bomb.randomSpawn();
         generate();
 
-        lvl = rand.nextInt(4)+1;
-//        generateWOD();
         GamePanel.setFocusable(true);
         GamePanel.requestFocusInWindow();
         GamePanel.setVisible(true);
@@ -153,47 +132,6 @@ public class GamePanel implements KeyListener {
 
     public void update(Main MF, Player Player) {
 //        Enemy.update(Player);
-        Beams.update(this);
-        Sniper.update();
-//        for (int i=0;i<WODs.size();i++){
-//            if (WODs.get(i).getBounds().intersects(Player.Player.getBounds())){
-//                if (!Player.isDodge && !Player.vulnerability) {
-//                    Player.Health -= 10;
-//                    Player.vulnerability = true;
-//
-//                    Timer ResetVulnerability = new Timer (1500, e -> {
-//                        Player.vulnerability = false;
-//                        ((Timer)e.getSource()).stop();
-//                    });
-//
-//                    ResetVulnerability.start();
-//                }
-//            }
-//        }
-        // Bomb Explored Anywhere, Starts at 25 secs
-        if (MF.seconds != 0 && MF.seconds % 35 == 0) {
-            if (!hasRun2) {
-                GamePanel.add(Beams.Shooter);
-                GamePanel.add(Beams.Beam);
-                GamePanel.add(Beams.ShootingArea);
-                GamePanel.setComponentZOrder(Beams.Shooter, 1);
-                GamePanel.setComponentZOrder(Beams.Beam, 1);
-                GamePanel.setComponentZOrder(Beams.ShootingArea, 1);
-                Beams.Shooter.setVisible(true);
-                hasRun2 = true;
-
-                if (!Beams.spawn){
-                    Beams.spawn = true;
-                    ShooterSpawnDelay.start();
-                }
-
-                if (!Beams.isShooting) {
-                    Beams.ShooterTimer.start();
-                }
-            }
-        } else {
-            hasRun2 = false;
-        }
     }
     public void generate() {
         for (int i=0;i<Map1.length;i++){

@@ -11,27 +11,75 @@ public class Bomb {
     int x;
     int y;
     boolean hasExploded = false;
-    int BombDuration = 2720;
+    boolean start = false;
+    int BombDuration = 2750;
     Timer BombRandomSpawn;
+    Timer ExplodeTimer;
 
     public Bomb() {
         Bomb = new JLabel();
+        BombExplosion = new JLabel();
+        BombExplosion.setBorder(BorderFactory.createLineBorder(Color.RED));
+        BombExplosion.setVisible(false);
         Bomb.setIcon(BombIcon);
         Rand = new Random();
         Bomb.setVisible(true);
 
-        BombRandomSpawn = new Timer(BombDuration, e -> {
-            randomSpawn();
+        Timer delay = new Timer(1500, e2 -> {
+            BombExplosion.setVisible(false);
+            hasExploded = false;
+            ((Timer)e2.getSource()).stop();
+        });
+
+
+        ExplodeTimer = new Timer(2250, e -> {
+            BombExplosion.setVisible(true);
+            hasExploded = true;
+            delay.start();
+            Timer bdelay = new Timer(500, e2 -> {
+                Bomb.setVisible(false);
+                ((Timer)e2.getSource()).stop();
+            });
+            bdelay.start();
+
             ((Timer)e.getSource()).stop();
         });
+        if (!hasExploded) {
+            BombRandomSpawn = new Timer(BombDuration, e -> {
+                randomSpawn();
+                ((Timer)e.getSource()).stop();
+            });
+
+            System.out.println("Bomb Exploded");
+            BombRandomSpawn.start();
+            ExplodeTimer.start();
+        }
+    }
+
+    public void update() {
+        if (hasExploded) {
+            BombExplosion.setVisible(true);
+        }
+
+        if (start) {
+            BombRandomSpawn.start();
+        }
     }
 
 
     public void randomSpawn() {
-        BombRandomSpawn.start();
-        Bomb.setVisible(true);
-        x = Rand.nextInt(735) + 290;
-        y = Rand.nextInt(608) + 30;
-        Bomb.setBounds(x,y,64,64);
+        if (!hasExploded){
+            BombExplosion.setVisible(false);
+            Bomb.setVisible(true);
+            BombRandomSpawn.start();
+            ExplodeTimer.start();
+
+            System.out.println("Bomb Spawned");
+
+            x = Rand.nextInt(735) + 290;
+            y = Rand.nextInt(608) + 30;
+            Bomb.setBounds(x,y,64,64);
+            BombExplosion.setBounds(Bomb.getX()-64, Bomb.getY()-48, Bomb.getWidth()+128, Bomb.getHeight()+128);
+        }
     }
 }
