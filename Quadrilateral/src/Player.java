@@ -20,10 +20,16 @@ public class Player implements KeyListener {
     Image PlayerWalkingRight = new ImageIcon("Quadrilateral/src/Images/Player-MoveRight.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image PlayerWalkingLeft = new ImageIcon("Quadrilateral/src/Images/Player-MoveLeft.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image PlayerJumpingImage = new ImageIcon("Quadrilateral/src/Images/Player-Jump.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerDeathImage = new ImageIcon("Quadrilateral/src/Images/Death/death.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerDeathAppearImage = new ImageIcon("Quadrilateral/src/Images/Death/death-appear.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image PlayerDeathIdleImage = new ImageIcon("Quadrilateral/src/Images/Death/death-idle.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon PlayerWalkingRightIcon = new ImageIcon(PlayerWalkingRight);
     ImageIcon PlayerMovingLeftIcon = new ImageIcon(PlayerWalkingLeft);
     ImageIcon PlayerJumpinngIcon = new ImageIcon(PlayerJumpingImage);
     ImageIcon PlayerIcon = new ImageIcon(PlayerImage);
+    ImageIcon PlayerDeathIcon = new ImageIcon(PlayerDeathImage);
+    ImageIcon PlayerDeathAppearIcon = new ImageIcon(PlayerDeathAppearImage);
+    ImageIcon deathIcon = new ImageIcon(PlayerDeathIdleImage);
     ImageIcon PlayerIconIdle = new ImageIcon(PlayerImageIdle);
 
     // Sound
@@ -92,57 +98,60 @@ public class Player implements KeyListener {
 
 
     public void update(Main MF) {
-        if (Coins == 15 && !hasEnemySpawned) {
-            NewEnemy.setVisible(true);
-            if (NewEnemy.isVisible()) {
-                System.out.println("+ enemies");
-                NewEnemy.setText("+ sniper");
-                NewEnemy.setBounds(Player.getX()+32, Player.getY()-15, 20, 10);
 
-                Timer NewEnemyTimer = new Timer(2000, e -> {
-                    NewEnemy.setVisible(false);
-                    ((Timer)e.getSource()).stop();
-                });
-                NewEnemyTimer.start();
+        if (!isDead){
+            if (Coins == 15 && !hasEnemySpawned) {
+                NewEnemy.setVisible(true);
+                if (NewEnemy.isVisible()) {
+                    System.out.println("+ enemies");
+                    NewEnemy.setText("+ sniper");
+                    NewEnemy.setBounds(Player.getX()+32, Player.getY()-15, 20, 10);
+
+                    Timer NewEnemyTimer = new Timer(2000, e -> {
+                        NewEnemy.setVisible(false);
+                        ((Timer)e.getSource()).stop();
+                    });
+                    NewEnemyTimer.start();
+                }
+                hasEnemySpawned = true; // Set the flag to true after the enemy has spawned
             }
-            hasEnemySpawned = true; // Set the flag to true after the enemy has spawned
-        }
 
-        oldPosX = PosX;
-        oldPosY = PosY;
+            oldPosX = PosX;
+            oldPosY = PosY;
 
-        PosX = Player.getX();
-        PosY = Player.getY();
+            PosX = Player.getX();
+            PosY = Player.getY();
 
-        PosX += DirX;
-        PosY += DirY;
+            PosX += DirX;
+            PosY += DirY;
 
-        Player.setBounds(PosX, PosY, 64, 64);
-        PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
-
-        if (    PlayerHitbox.getBounds().intersects(MF.Bounds1.getBounds()) ||
-                PlayerHitbox.getBounds().intersects(MF.Bounds2.getBounds()) ||
-                PlayerHitbox.getBounds().intersects(MF.Bounds3.getBounds()) ||
-                PlayerHitbox.getBounds().intersects(MF.Bounds4.getBounds()))
-        {
-            PosX = oldPosX;
-            PosY = oldPosY;
             Player.setBounds(PosX, PosY, 64, 64);
             PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
-        }
 
-        if (MovingLeft && !isDodge) {
-            Player.setIcon(PlayerMovingLeftIcon);
-        }
-        if (MovingRight && !isDodge) {
-            Player.setIcon(PlayerWalkingRightIcon);
-        }
+            if (    PlayerHitbox.getBounds().intersects(MF.Bounds1.getBounds()) ||
+                    PlayerHitbox.getBounds().intersects(MF.Bounds2.getBounds()) ||
+                    PlayerHitbox.getBounds().intersects(MF.Bounds3.getBounds()) ||
+                    PlayerHitbox.getBounds().intersects(MF.Bounds4.getBounds()))
+            {
+                PosX = oldPosX;
+                PosY = oldPosY;
+                Player.setBounds(PosX, PosY, 64, 64);
+                PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
+            }
 
-        // Player Dies
-        if (Health <= 0) {
-            Health = 0;
-            Player.setVisible(false);
-            System.out.println("GAME OVER NIGGA");
+            if (MovingLeft && !isDodge) {
+                Player.setIcon(PlayerMovingLeftIcon);
+            }
+            if (MovingRight && !isDodge) {
+                Player.setIcon(PlayerWalkingRightIcon);
+            }
+
+            // Player Dies
+            if (Health <= 0) {
+                Health = 0;
+                Player.setVisible(false);
+                System.out.println("GAME OVER NIGGA");
+            }
         }
     }
 
@@ -151,97 +160,100 @@ public class Player implements KeyListener {
     }
     @Override
     public void keyPressed(KeyEvent e) {
-
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            DirY = -3;
-            if (!kfxclick){
-                PlayMusic(kfx);
-                kfxclick = true;
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            DirY = 3;
-            if (!kfxclick){
-                PlayMusic(kfx);
-                kfxclick = true;
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            DirX = -3;
-            if (!kfxclick){
-                PlayMusic(kfx);
-                kfxclick = true;
-            }
-            if (!isDodge) { // Check if player is not dodging
-                Player.setIcon(PlayerMovingLeftIcon);
-                MovingLeft = true;
-            }
-        }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            DirX = 3;
-            if (!kfxclick){
-                PlayMusic(kfx);
-                kfxclick = true;
-            }
-            if (!isDodge) { // Check if player is not dodging
-                Player.setIcon(PlayerWalkingRightIcon);
-                MovingRight = true;
-            }
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && !isSpacebarSpammed) {
-            isSpacebarSpammed = true;
-            isDodge = true;
-
-            if (isDodge) {
-                Player.setIcon(PlayerJumpinngIcon);
-                if (jsfx >= 3) { jsfx = 0; }
-                if (jsfx == 0) {
-                    PlayMusic(jfx);
-                    jsfx++;
+        if (!isDead){
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                DirY = -3;
+                if (!kfxclick){
+                    PlayMusic(kfx);
+                    kfxclick = true;
                 }
-                else if (jsfx == 1) {
-                    PlayMusic(jfx2);
-                    jsfx++;
-                }
-                else if (jsfx == 2) {
-                    PlayMusic(jfx3);
-                    jsfx++;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                DirY = 3;
+                if (!kfxclick){
+                    PlayMusic(kfx);
+                    kfxclick = true;
                 }
             }
 
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                DirX = -3;
+                if (!kfxclick){
+                    PlayMusic(kfx);
+                    kfxclick = true;
+                }
+                if (!isDodge) { // Check if player is not dodging
+                    Player.setIcon(PlayerMovingLeftIcon);
+                    MovingLeft = true;
+                }
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                DirX = 3;
+                if (!kfxclick){
+                    PlayMusic(kfx);
+                    kfxclick = true;
+                }
+                if (!isDodge) { // Check if player is not dodging
+                    Player.setIcon(PlayerWalkingRightIcon);
+                    MovingRight = true;
+                }
+            }
 
-            Player.setBounds(Player.getX(), Player.getY(), 64, 64);
+            if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && !isSpacebarSpammed) {
+                isSpacebarSpammed = true;
+                isDodge = true;
 
-            DodgeTime.start();
+                if (isDodge) {
+                    Player.setIcon(PlayerJumpinngIcon);
+                    if (jsfx >= 3) { jsfx = 0; }
+                    if (jsfx == 0) {
+                        PlayMusic(jfx);
+                        jsfx++;
+                    }
+                    else if (jsfx == 1) {
+                        PlayMusic(jfx2);
+                        jsfx++;
+                    }
+                    else if (jsfx == 2) {
+                        PlayMusic(jfx3);
+                        jsfx++;
+                    }
+                }
+
+
+                Player.setBounds(Player.getX(), Player.getY(), 64, 64);
+
+                DodgeTime.start();
+            }
         }
-
     }
     @Override
     public void keyReleased(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_W) {
-            DirY = 0;
-            kfxclick = false;
-        }
-        if(e.getKeyCode() == KeyEvent.VK_S) {
-            DirY = 0;
-            kfxclick = false;
-        }
-        if(e.getKeyCode() == KeyEvent.VK_A) {
-            DirX = 0;
-            Player.setIcon(PlayerIcon);
-            MovingLeft = false;
-            kfxclick = false;
-        }
-        if(e.getKeyCode() == KeyEvent.VK_D) {
-            DirX = 0;
-            Player.setIcon(PlayerIcon);
-            MovingRight = false;
-            kfxclick = false;
-        }
+        if (!isDead){
+            if(e.getKeyCode() == KeyEvent.VK_W) {
+                DirY = 0;
+                kfxclick = false;
+            }
+            if(e.getKeyCode() == KeyEvent.VK_S) {
+                DirY = 0;
+                kfxclick = false;
+            }
+            if(e.getKeyCode() == KeyEvent.VK_A) {
+                DirX = 0;
+                Player.setIcon(PlayerIcon);
+                MovingLeft = false;
+                kfxclick = false;
+            }
+            if(e.getKeyCode() == KeyEvent.VK_D) {
+                DirX = 0;
+                Player.setIcon(PlayerIcon);
+                MovingRight = false;
+                kfxclick = false;
+            }
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            isSpacebarSpammed = false;
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                isSpacebarSpammed = false;
+            }
         }
     }
 
