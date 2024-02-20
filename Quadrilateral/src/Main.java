@@ -208,6 +208,7 @@ public class Main implements Runnable {
                              || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())) {
                         Player.isDead = true;
                         if (Player.isDead) {
+                            Player.PlayMusic(Player.dfx);
                             Player.Player.setIcon(Player.PlayerDeathAppearIcon);
                             Timer DeathDelay = new Timer(300, e ->{
                                 Player.Player.setIcon(Player.PlayerDeathIcon);

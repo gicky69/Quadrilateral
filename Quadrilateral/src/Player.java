@@ -39,6 +39,7 @@ public class Player implements KeyListener {
     String jfx3 = "Quadrilateral/src/Sounds/Jump/JSFX3.wav";
 
     String kfx = "Quadrilateral/src/Sounds/keyclick.wav";
+    String dfx = "Quadrilateral/src/Sounds/Game/deathwav.wav";
     static boolean kfxclick = false;
     //
 
@@ -267,6 +268,12 @@ public class Player implements KeyListener {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInput);
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                if (filepath.equals("Quadrilateral/src/Sounds/deathwav.wav")) {
+                    gainControl.setValue(0.0f);
+                }
+                else {
+                    gainControl.setValue(0.0f);
+                }
                 gainControl.setValue(-5.0f);
                 clip.start();
             }
