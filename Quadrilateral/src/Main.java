@@ -22,6 +22,7 @@ public class Main implements Runnable {
     Beams Beam;
     Sniper Sniper;
     Player Player;
+    Charger Charger;
     Thread GameThread;
     //
 
@@ -54,6 +55,7 @@ public class Main implements Runnable {
         PauseL = new JLabel("Paused");
         Bomb = new Bomb();
         Sniper = new Sniper(Player);
+        Charger = new Charger();
         Beam = new Beams();
         //
 
@@ -122,6 +124,7 @@ public class Main implements Runnable {
                 Frame.add(WOD.WOD);
 
                 Frame.add(Sniper.Bullet);
+                Frame.add(Charger.Charger);
 
 //                Frame.add(Beam.Shooter);
 //                Frame.add(Beam.Beam);
@@ -183,7 +186,7 @@ public class Main implements Runnable {
                     }
 
                     Sniper.update(Player);
-
+                    Charger.update(Player);
                     WOD.update();
 
                     Bomb.update();

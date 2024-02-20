@@ -37,11 +37,10 @@ public class Sniper {
         Sniper.setBounds(0,0,64,64);
 
 //        Bullet.setBorder(BorderFactory.createLineBorder(Color.RED));
-
         ShooterTimer = new Timer(1000, e -> {
             if (Sniper.isVisible()){
                 shoots = true;
-                Bullet.setBounds(Sniper.getX(), Sniper.getY(), 48, 48);
+                Bullet.setBounds(Sniper.getX()+16, Sniper.getY()+16, 32, 32);
                 Bullet.setIcon(BulletIcon);
                 Bullet.setVisible(true);
                 ((Timer)e.getSource()).stop();
