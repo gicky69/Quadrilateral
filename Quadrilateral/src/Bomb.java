@@ -43,30 +43,28 @@ public class Bomb {
             ((Timer)e2.getSource()).stop();
         });
 
+        if (Bomb.isVisible()){
+            ExplodeTimer = new Timer(2680, e -> {
+                BombExplosion.setIcon(ExplosionIcon);
+                BombExplosion.setVisible(true);
+                hasExploded = true;
+                PlayMusic(bsfx1);
+                delay.start();
+                Timer bdelay = new Timer(500, e2 -> {
+                    Bomb.setVisible(false);
+                    ((Timer)e2.getSource()).stop();
+                });
+                bdelay.start();
 
-        ExplodeTimer = new Timer(2680, e -> {
-            BombExplosion.setIcon(ExplosionIcon);
-            BombExplosion.setVisible(true);
-            hasExploded = true;
-            PlayMusic(bsfx1);
-            delay.start();
-            Timer bdelay = new Timer(500, e2 -> {
-                Bomb.setVisible(false);
-                ((Timer)e2.getSource()).stop();
+                ((Timer)e.getSource()).stop();
             });
-            bdelay.start();
+        }
 
-            ((Timer)e.getSource()).stop();
-        });
         if (!hasExploded) {
             BombRandomSpawn = new Timer(BombDuration, e -> {
                 randomSpawn();
                 ((Timer)e.getSource()).stop();
             });
-
-            System.out.println("Bomb Exploded");
-            BombRandomSpawn.start();
-            ExplodeTimer.start();
         }
     }
 
@@ -118,5 +116,12 @@ public class Bomb {
         catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void reset() {
+        Bomb.setBounds(0,0,0,0);
+        BombExplosion.setBounds(0,0,0,0);
+        BombHitbox.setBounds(0,0,0,0);
+        start = false;
     }
 }

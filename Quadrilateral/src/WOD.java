@@ -18,7 +18,7 @@ public class WOD {
     Random rand;
     int pos;
     int prevPos = -1;
-    int speed = 2;
+    int speed = 3;
     boolean start = false;
 
     Timer SpawnTimer;
@@ -35,6 +35,7 @@ public class WOD {
         rand = new Random();
         WOD.setVisible(true);
         StartTimer = new Timer(1500, e -> {
+            WOD.setVisible(true);
             start = true;
             ((Timer)e.getSource()).stop();
         });
@@ -45,23 +46,17 @@ public class WOD {
             StartTimer.start();
         });
 
-        speedIncreaseTimer = new Timer(15000, e -> {
-            speed += 1;
-            System.out.println("Speed Increased to " + speed);
-        });
-        speedIncreaseTimer.start();
-
         randomSpawn();
-
     }
 
     public void update() {
+        System.out.println(pos);
         switch (pos) {
             case 1:
                 Indicator.setBounds(20, 300, 30, 64);
                 Indicator.setIcon(Indicator1);
 
-                if (start == true){
+                if (start){
                     WOD.setBounds(WOD.getX() + speed, WOD.getY(), 32, 660);
                     WOD.setIcon(WODIcon1);
                 }
@@ -69,7 +64,7 @@ public class WOD {
             case 2:
                 Indicator.setBounds(650, 630, 64, 30);
                 Indicator.setIcon(Indicator4);
-                if (start == true){
+                if (start){
                     WOD.setBounds(WOD.getX(), WOD.getY() - speed, 820, 32);
                     WOD.setIcon(WODIcon2);
                 }
@@ -77,7 +72,7 @@ public class WOD {
             case 3:
                 Indicator.setBounds(1230, 300, 30, 64);
                 Indicator.setIcon(Indicator2);
-                if (start == true){
+                if (start){
                     WOD.setBounds(WOD.getX() - speed, WOD.getY(), 32, 660);
                     WOD.setIcon(WODIcon1);
                 }
@@ -85,7 +80,7 @@ public class WOD {
             case 4:
                 Indicator.setBounds(660, 10, 64, 30);
                 Indicator.setIcon(Indicator3);
-                if (start == true){
+                if (start){
                     WOD.setBounds(WOD.getX(), WOD.getY() + speed, 820, 32);
                     WOD.setIcon(WODIcon2);
                 }
@@ -94,9 +89,9 @@ public class WOD {
 
         if (
                 pos == 1 && WOD.getX() > 1300
-                || pos == 3 && WOD.getX() < -32
-                || pos == 2 && WOD.getY() < -32
-                || pos == 4 && WOD.getY() > 690) {
+                        || pos == 3 && WOD.getX() < -32
+                        || pos == 2 && WOD.getY() < -32
+                        || pos == 4 && WOD.getY() > 800) {
             start = false;
             randomSpawn();
         }
@@ -108,10 +103,10 @@ public class WOD {
                 WOD.setBounds(-32,15,32,660);
                 break;
             case 2:
-                WOD.setBounds(278,690,820,32);
+                WOD.setBounds(278,732,820,32);
                 break;
             case 3:
-                WOD.setBounds(1232,10,32,660);
+                WOD.setBounds(1300,10,32,660);
                 break;
             case 4:
                 WOD.setBounds(278,-32,820,32);
@@ -126,5 +121,12 @@ public class WOD {
 
         prevPos = pos;
         SpawnTimer.start();
+    }
+
+    public void reset() {
+        WOD.setVisible(false);
+        WOD.setBounds(-100,-100,0,0);
+        randomSpawn();
+        start = false;
     }
 }

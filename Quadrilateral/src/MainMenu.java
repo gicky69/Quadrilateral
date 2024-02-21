@@ -6,12 +6,18 @@ import java.awt.event.MouseEvent;
 public class    MainMenu {
     JPanel MainMenu;
     JLabel MainMenuBG;
+    JLabel MainMenuTitle;
+    JLabel MainMeneIndc;
     JButton Play;
     Image WKeyImage = new ImageIcon("Quadrilateral/src/Images/pixil-gif-drawing-2.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image AKeyImage = new ImageIcon("Quadrilateral/src/Images/pixil-gif-drawingA.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
+    Image BgTitleImg = new ImageIcon("Quadrilateral/src/Images/MainMenu/bgtitle.gif").getImage().getScaledInstance(191,240,Image.SCALE_DEFAULT);
+    Image BgIndcImg = new ImageIcon("Quadrilateral/src/Images/MainMenu/indbg.gif").getImage().getScaledInstance(68,54,Image.SCALE_DEFAULT);
     Image PlayButtonImage1 = new ImageIcon("Quadrilateral/src/Images/PlayButton1.png").getImage().getScaledInstance(100,50,Image.SCALE_DEFAULT);
     Image PlayButtonImage2 = new ImageIcon("Quadrilateral/src/Images/PlayButton2.png").getImage().getScaledInstance(100,50,Image.SCALE_DEFAULT);
     Image MainMenuImage = new ImageIcon("Quadrilateral/src/Images/MainMenu/mainmenu.gif").getImage().getScaledInstance(1280,720,Image.SCALE_DEFAULT);
+    ImageIcon BgTitelIcon = new ImageIcon(BgTitleImg);
+    ImageIcon BgIndcIcon = new ImageIcon(BgIndcImg);
     ImageIcon MainMenuIcon = new ImageIcon(MainMenuImage);
     ImageIcon AKeyIcon = new ImageIcon(AKeyImage);
     ImageIcon PlayButtonIcon1 = new ImageIcon(PlayButtonImage1);
@@ -22,6 +28,9 @@ public class    MainMenu {
     public MainMenu() {
         MainMenu = new JPanel();
         MainMenuBG = new JLabel();
+        MainMenuTitle = new JLabel();
+        MainMeneIndc = new JLabel();
+
         MainMenuBG.setIcon(MainMenuIcon);
 
         Play = new JButton("Play");
@@ -32,6 +41,12 @@ public class    MainMenu {
 
         MainMenu.setBounds(0,0,1280,720);
         MainMenu.setLayout(null);
+
+        MainMenuTitle.setBounds(560,-10,191,240);
+        MainMenuTitle.setIcon(BgTitelIcon);
+
+        MainMeneIndc.setBounds(50,300,68,54);
+        MainMeneIndc.setIcon(BgIndcIcon);
 
         MainMenuBG.setBounds(0,0,1280,720);
 
@@ -53,11 +68,13 @@ public class    MainMenu {
             @Override
             public void mouseEntered(MouseEvent e) {
                 Play.setIcon(new ImageIcon(PlayButtonImage2));
+                Play.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
                 Play.setIcon(new ImageIcon(PlayButtonImage1));
+                Play.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
 
@@ -65,6 +82,8 @@ public class    MainMenu {
             MainMenu.setVisible(false);
         });
 
+        MainMenu.add(MainMenuTitle);
+        MainMenu.add(MainMeneIndc);
         MainMenu.add(Play);
         MainMenu.add(HowToPlay);
         MainMenu.add(Exit);
