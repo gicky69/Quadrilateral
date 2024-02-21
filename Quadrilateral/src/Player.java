@@ -77,7 +77,7 @@ public class Player implements KeyListener {
 
         random = new Random();
 
-        Player.setBounds(800/2,700/2,64,64);
+        Player.setBounds(650,631,64,64);
         PlayerHitbox.setBounds(800/2,700/2,64,64);
 
         isDodge = false;
@@ -85,20 +85,20 @@ public class Player implements KeyListener {
         Player.setLayout(null);
         Player.setVisible(true);
 
-        DodgeTime = new Timer(550, e2 ->{
+        DodgeTime = new Timer(520, e2 ->{
             isDodge = false;
             Player.setIcon(PlayerIcon);
         });
         DodgeTime.setRepeats(false);
 //        PlayerHitbox.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-//        IdleTimer = new Timer(1000, e1 -> {
-//            Player.setIcon(PlayerIconIdle);
-//        });
     }
 
 
     public void update(Main MF) {
+        if (isDead){
+            return;
+        }
 
         if (!isDead){
             if (Coins == 15 && !hasEnemySpawned) {
@@ -145,13 +145,6 @@ public class Player implements KeyListener {
             }
             if (MovingRight && !isDodge) {
                 Player.setIcon(PlayerWalkingRightIcon);
-            }
-
-            // Player Dies
-            if (Health <= 0) {
-                Health = 0;
-                Player.setVisible(false);
-                System.out.println("GAME OVER NIGGA");
             }
         }
     }
@@ -240,14 +233,14 @@ public class Player implements KeyListener {
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_A) {
-                DirX = 0;
                 Player.setIcon(PlayerIcon);
+                DirX = 0;
                 MovingLeft = false;
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_D) {
-                DirX = 0;
                 Player.setIcon(PlayerIcon);
+                DirX = 0;
                 MovingRight = false;
                 kfxclick = false;
             }
@@ -284,5 +277,22 @@ public class Player implements KeyListener {
         catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+     public void reset() {
+        System.out.println("Player Reset");
+
+        Player.setVisible(true);
+        Player.setIcon(PlayerIcon);
+        Player.setBounds(650,300,64,64);
+        PlayerHitbox.setBounds(800/2,700/2,64,64);
+
+        DirX = 0;
+        DirY = 0;
+
+        isDead = false;
+        isDodge = false;
+
+        Coins = 0;
     }
 }

@@ -143,4 +143,12 @@ public class Beams {
         isShooting = false;
         spawn = false;
     }
+
+    public void reset() {
+        Shooter.setBounds(0,0,0,0);
+        Beam.setBounds(0,0,0,0);
+        Shooter.setVisible(false);
+        Beam.setVisible(false);
+        spawn = false;
+    }
 }

@@ -8,7 +8,7 @@ public class Sniper {
     JLabel Sniper;
     JLabel Bullet;
     Image SniperImage = new ImageIcon("Quadrilateral/src/Images/Shooter.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
-    Image BulletImage = new ImageIcon("Quadrilateral/src/Images/Bone.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
+    Image BulletImage = new ImageIcon("Quadrilateral/src/Images/Bone.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon BulletIcon = new ImageIcon(BulletImage);
     ImageIcon SniperIcon = new ImageIcon(SniperImage);
     int Sx;
@@ -38,19 +38,20 @@ public class Sniper {
 
 //        Bullet.setBorder(BorderFactory.createLineBorder(Color.RED));
         ShooterTimer = new Timer(1000, e -> {
-            if (Sniper.isVisible()){
+            if (Sniper.isVisible() && start){
                 shoots = true;
-                Bullet.setBounds(Sniper.getX()+16, Sniper.getY()+16, 32, 32);
+                Bullet.setBounds(Sniper.getX()+16, Sniper.getY()+16, 64, 64);
                 Bullet.setIcon(BulletIcon);
                 Bullet.setVisible(true);
                 ((Timer)e.getSource()).stop();
             }
         });
-        ShooterTimer.start();
 
         SpawnDelayTimer = new Timer(3000, e -> {
-            start = true;
-            spawn();
+            if (start) {
+                spawn();
+                ShooterTimer.start();
+            }
         });
     }
 
@@ -67,7 +68,7 @@ public class Sniper {
         }
 
         if (start == true){
-            Sniper.setVisible(true);
+            SpawnDelayTimer.start();
         }
     }
 
@@ -78,6 +79,12 @@ public class Sniper {
 
         Sniper.setBounds(Sx,Sy,64,64);
         Sniper.setVisible(true);
-        ShooterTimer.start();
+    }
+
+    public void reset() {
+        Sniper.setVisible(false);
+        Bullet.setVisible(false);
+        start = false;
+        shoots = false;
     }
 }

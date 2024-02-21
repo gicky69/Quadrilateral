@@ -51,14 +51,15 @@ public class Charger {
         Charger.setVisible(false);
 
         ChargerTimeSpawn = new Timer(1500, e -> {
-            randomSpawn();
-            Charger.setVisible(true);
-            ((Timer)e.getSource()).stop();
+            if (start) {
+                randomSpawn();
+                Charger.setVisible(true);
+                ((Timer)e.getSource()).stop();
+            }
         });
 
         ChargeTimer = new Timer(1000, e -> {
            if (Charger.isVisible()){
-                start = true;
                 ChargerDelay.start();
            }
             ((Timer)e.getSource()).stop();
@@ -66,60 +67,70 @@ public class Charger {
 
         ChargerDelay = new Timer(1700, e -> {
             Charger.setVisible(false);
-            start = false;
             ChargerTimeSpawn.start();
             ((Timer)e.getSource()).stop();
         });
-        ChargerTimeSpawn.start();
     }
 
     public void update(Player player) {
-        if (Charger.isVisible()){
-            if (start) {
-                switch (pos) {
-                    case 1:
-                        Charger.setLocation(Charger.getX() + velocity, Charger.getY() + velocity);
-                        Charger.setIcon(ChargerIcon1F);
-                        break;
-                    case 2:
-                        Charger.setLocation(Charger.getX() + velocity, Charger.getY() - velocity);
-                        Charger.setIcon(ChargerIcon3F);
-                        break;
-                    case 3:
-                        Charger.setLocation(Charger.getX() - velocity, Charger.getY() + velocity);
-                        Charger.setIcon(ChargerIcon2F);
-                        break;
-                    case 4:
-                        Charger.setLocation(Charger.getX() - velocity, Charger.getY() - velocity);
-                        Charger.setIcon(ChargerIcon4F);
-                        break;
+        if (start) {
+            System.out.println("Charger is charging");
+            ChargerTimeSpawn.start();
+
+            if (Charger.isVisible()){
+                if (start) {
+                    switch (pos) {
+                        case 1:
+                            Charger.setLocation(Charger.getX() + velocity, Charger.getY() + velocity);
+                            Charger.setIcon(ChargerIcon1F);
+                            break;
+                        case 2:
+                            Charger.setLocation(Charger.getX() + velocity, Charger.getY() - velocity);
+                            Charger.setIcon(ChargerIcon3F);
+                            break;
+                        case 3:
+                            Charger.setLocation(Charger.getX() - velocity, Charger.getY() + velocity);
+                            Charger.setIcon(ChargerIcon2F);
+                            break;
+                        case 4:
+                            Charger.setLocation(Charger.getX() - velocity, Charger.getY() - velocity);
+                            Charger.setIcon(ChargerIcon4F);
+                            break;
+                    }
                 }
             }
         }
     }
 
     public void randomSpawn() {
-        pos = rand.nextInt(4) + 1;
-        Charger.setVisible(true);
-        System.out.println("Charger Spawned at " + pos);
-        switch (pos) {
-            case 1:
-                Charger.setBounds(242,5,48,48);
-                Charger.setIcon(ChargerIcon1);
-                break;
-            case 2:
-                Charger.setBounds(242,620,48,48);
-                Charger.setIcon(ChargerIcon3);
-                break;
-            case 3:
-                Charger.setBounds(1100,5,48,48);
-                Charger.setIcon(ChargerIcon2);
-                break;
-            case 4:
-                Charger.setBounds(1100,620,48,48);
-                Charger.setIcon(ChargerIcon4);
-                break;
+        if (start) {
+            pos = rand.nextInt(4) + 1;
+            Charger.setVisible(true);
+            System.out.println("Charger Spawned at " + pos);
+            switch (pos) {
+                case 1:
+                    Charger.setBounds(242,5,48,48);
+                    Charger.setIcon(ChargerIcon1);
+                    break;
+                case 2:
+                    Charger.setBounds(242,620,48,48);
+                    Charger.setIcon(ChargerIcon3);
+                    break;
+                case 3:
+                    Charger.setBounds(1100,5,48,48);
+                    Charger.setIcon(ChargerIcon2);
+                    break;
+                case 4:
+                    Charger.setBounds(1100,620,48,48);
+                    Charger.setIcon(ChargerIcon4);
+                    break;
+            }
+            ChargeTimer.start();
         }
-        ChargeTimer.start();
+    }
+
+    public void reset() {
+        Charger.setVisible(false);
+        start = false;
     }
 }

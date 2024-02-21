@@ -125,4 +125,8 @@ public class CoinDrops {
             System.out.println(e);
         }
     }
+
+    public void reset() {
+        spawn();
+    }
 }

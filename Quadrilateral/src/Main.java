@@ -60,7 +60,7 @@ public class Main implements Runnable {
         //
 
         // End Panel
-        EndPanel = new EndPanel();
+        EndPanel = new EndPanel(this);
 
 
         // Timer
@@ -68,7 +68,7 @@ public class Main implements Runnable {
         IGTimerL = new JLabel();
 
         Frame.setTitle("Dodge It!");
-        Frame.setSize(1280, 720);
+        Frame.setSize(1280, 760);
         Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Frame.setLayout(null);
         Frame.setLocationRelativeTo(null);
@@ -155,7 +155,6 @@ public class Main implements Runnable {
             seconds += 1;
             int minutes = seconds / 60;
             int sec = seconds % 60;
-            IGTimerL.setText(String.format("%02d:%02d", minutes, sec));
         });
     }
 
@@ -164,29 +163,46 @@ public class Main implements Runnable {
     }
 
     public void start() {
+        if (GameThread != null) {
+            stop();
+        }
         GameThread = new Thread(this);
         GameThread.start();
     }
 
+    public void stop() {
+        if (GameThread != null) {
+            GameThread.interrupt();
+            GameThread = null;
+        }
+    }
+
     public void run() {
         while(true) {
+            if (EndPanel.Restart.isEnabled()) {
+                EndPanel.Restart.addActionListener(e -> {
+                    EndPanel.EndPanel.setVisible(false);
+                });
+            }
+
             if (!Player.isDead) {
                 if (!GamePanel.isPaused) {
                     IGTimer.start();
                     PauseMenu.setVisible(false);
                     Player.update(this);
-                    if (seconds / 1 == 1){
-                        Bomb.start = true;
-                    }
 
-                    if (Player.Coins == 10) {
+                    if (Player.Coins == 5){
+                        Bomb.start = true;
                         WOD.speed = 4;
                     }
-                    if (Player.Coins == 15) {
-                        Sniper.SpawnDelayTimer.start();
+                    if (Player.Coins == 10) {
+                        Sniper.start = true;
+                        WOD.speed = 5;
+                        Bomb.BombDuration = 2000;
                     }
-                    if (Player.Coins == 20) {
-                        Charger.ChargerTimeSpawn.start();
+                    if (Player.Coins == 15) {
+                        Charger.start = true;
+                        WOD.speed = 6;
                     }
 
                     Sniper.update(Player);
@@ -205,10 +221,12 @@ public class Main implements Runnable {
                     if (
                             (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
                              || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())) {
+                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Charger.Charger.getBounds()) && !Player.isDodge && Charger.Charger.isVisible())) {
                         Player.isDead = true;
                         if (Player.isDead) {
                             Player.PlayMusic(Player.dfx);
+
                             Player.Player.setIcon(Player.PlayerDeathAppearIcon);
                             Timer DeathDelay = new Timer(300, e ->{
                                 Player.Player.setIcon(Player.PlayerDeathIcon);
@@ -220,10 +238,14 @@ public class Main implements Runnable {
                                 ((Timer)e.getSource()).stop();
                             });
                             DeathTimer.start();
+
+                            stop();
                         }
                     }
+
                     Frame.revalidate();
                     Frame.repaint();
+
                 } else {
                     PauseMenu.setVisible(true);
                     IGTimer.stop();
@@ -231,10 +253,7 @@ public class Main implements Runnable {
             } else {
                 IGTimer.stop();
 
-                EndPanel.EndPanel.setVisible(true);
-
-                Frame.revalidate();
-                Frame.repaint();
+                EndPanel.EndTimer.start();
             }
             try {
                 Thread.sleep(1000/60);
