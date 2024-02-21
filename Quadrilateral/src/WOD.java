@@ -28,6 +28,7 @@ public class WOD {
     public WOD() {
         WOD = new JLabel();
         Indicator = new JLabel();
+
 //        Indicator.setBorder(BorderFactory.createLineBorder(Color.RED));
         Indicator.setVisible(true);
 

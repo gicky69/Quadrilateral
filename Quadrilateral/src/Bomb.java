@@ -1,5 +1,10 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Random;
 
 public class Bomb {
@@ -8,6 +13,9 @@ public class Bomb {
     Image ExplosionImage = new ImageIcon("Quadrilateral/src/Images/Explosion.gif").getImage().getScaledInstance(192,192,Image.SCALE_DEFAULT);
     ImageIcon ExplosionIcon = new ImageIcon(ExplosionImage);
     ImageIcon BombIcon = new ImageIcon(BombImage);
+
+    String bsfx1 = "Quadrilateral/src/Sounds/Game/bomb1.wav";
+
     JLabel BombExplosion;
     JLabel BombHitbox;
     Random Rand;
@@ -40,6 +48,7 @@ public class Bomb {
             BombExplosion.setIcon(ExplosionIcon);
             BombExplosion.setVisible(true);
             hasExploded = true;
+            PlayMusic(bsfx1);
             delay.start();
             Timer bdelay = new Timer(500, e2 -> {
                 Bomb.setVisible(false);
@@ -86,6 +95,28 @@ public class Bomb {
             y = Rand.nextInt(608) + 30;
             Bomb.setBounds(x,y,64,64);
             BombExplosion.setBounds(Bomb.getX()-64, Bomb.getY()-64, Bomb.getWidth()+128, Bomb.getHeight()+128);
+        }
+    }
+
+    public static void PlayMusic(String filepath) {
+        // if key is pressed
+        try {
+            File musicFile = new File(filepath);
+
+            if (musicFile.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(0.0f);
+                clip.start();
+            }
+            else {
+                System.out.println("File not found");
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
         }
     }
 }

@@ -102,6 +102,7 @@ public class Main implements Runnable {
         IGTimerP.add(IGTimerL);
 
         Frame.add(MainMenu.MainMenu);
+        Frame.repaint();
 
         Frame.setVisible(true);
 
@@ -184,6 +185,9 @@ public class Main implements Runnable {
                     if (Player.Coins == 15) {
                         Sniper.SpawnDelayTimer.start();
                     }
+                    if (Player.Coins == 20) {
+                        Charger.ChargerTimeSpawn.start();
+                    }
 
                     Sniper.update(Player);
                     Charger.update(Player);
@@ -198,12 +202,26 @@ public class Main implements Runnable {
                     }
 
                     // Player Dead
-//                    if (
-//                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
-//                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
-//                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())) {
-//                        Player.isDead = true;
-//                    }
+                    if (
+                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
+                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())) {
+                        Player.isDead = true;
+                        if (Player.isDead) {
+                            Player.PlayMusic(Player.dfx);
+                            Player.Player.setIcon(Player.PlayerDeathAppearIcon);
+                            Timer DeathDelay = new Timer(300, e ->{
+                                Player.Player.setIcon(Player.PlayerDeathIcon);
+                                ((Timer)e.getSource()).stop();
+                            });
+                            DeathDelay.start();
+                            Timer DeathTimer = new Timer(800, e -> {
+                                Player.Player.setVisible(false);
+                                ((Timer)e.getSource()).stop();
+                            });
+                            DeathTimer.start();
+                        }
+                    }
                     Frame.revalidate();
                     Frame.repaint();
                 } else {
