@@ -54,9 +54,15 @@ public class Player implements KeyListener {
     int DirY;
     static int Coins = 0;
     static int Health = 100;
+
+    //
+    int speed = 1;
+    long lastTime = System.nanoTime();
+    double delta = 0.0;
+    double ns = 1000000000.0 / 60.0;
+    //
     boolean isDodge;
     boolean isSpacebarSpammed = false;
-    boolean hasEnemySpawned = false;
     boolean isDead = false;
     boolean MovingLeft = false;
     boolean MovingRight = false;
@@ -100,31 +106,20 @@ public class Player implements KeyListener {
             return;
         }
 
-        if (!isDead){
-            if (Coins == 15 && !hasEnemySpawned) {
-                NewEnemy.setVisible(true);
-                if (NewEnemy.isVisible()) {
-                    System.out.println("+ enemies");
-                    NewEnemy.setText("+ sniper");
-                    NewEnemy.setBounds(Player.getX()+32, Player.getY()-15, 20, 10);
+        long now = System.nanoTime();
+        delta += (now - lastTime) / ns;
+        lastTime = now;
 
-                    Timer NewEnemyTimer = new Timer(2000, e -> {
-                        NewEnemy.setVisible(false);
-                        ((Timer)e.getSource()).stop();
-                    });
-                    NewEnemyTimer.start();
-                }
-                hasEnemySpawned = true; // Set the flag to true after the enemy has spawned
-            }
+        if (!isDead){
 
             oldPosX = PosX;
             oldPosY = PosY;
 
-            PosX = Player.getX();
-            PosY = Player.getY();
-
-            PosX += DirX;
-            PosY += DirY;
+            if (delta >= 1) {
+                PosX += DirX * speed;
+                PosY += DirY * speed;
+                delta--;
+            }
 
             Player.setBounds(PosX, PosY, 64, 64);
             PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
@@ -187,7 +182,7 @@ public class Player implements KeyListener {
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
-                if (!isDodge) { // Check if player is not dodging
+                if (!isDodge) {
                     Player.setIcon(PlayerWalkingRightIcon);
                     MovingRight = true;
                 }
@@ -197,8 +192,9 @@ public class Player implements KeyListener {
                 isSpacebarSpammed = true;
                 isDodge = true;
 
+                Player.setIcon(PlayerJumpinngIcon);
+
                 if (isDodge) {
-                    Player.setIcon(PlayerJumpinngIcon);
                     if (jsfx >= 3) { jsfx = 0; }
                     if (jsfx == 0) {
                         PlayMusic(jfx);
@@ -233,13 +229,17 @@ public class Player implements KeyListener {
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_A) {
-                Player.setIcon(PlayerIcon);
+                if (!isDodge){
+                    Player.setIcon(PlayerIcon);
+                }
                 DirX = 0;
                 MovingLeft = false;
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_D) {
-                Player.setIcon(PlayerIcon);
+                if (!isDodge) {
+                    Player.setIcon(PlayerIcon);
+                }
                 DirX = 0;
                 MovingRight = false;
                 kfxclick = false;
@@ -284,6 +284,8 @@ public class Player implements KeyListener {
 
         Player.setVisible(true);
         Player.setIcon(PlayerIcon);
+        PosX = 650;
+        PosY = 300;
         Player.setBounds(650,300,64,64);
         PlayerHitbox.setBounds(800/2,700/2,64,64);
 

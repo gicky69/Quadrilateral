@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class EndPanel {
     JPanel EndPanel;
@@ -10,7 +8,7 @@ public class EndPanel {
     Main mainInstance; // Instance of Main class
 
     Timer EndTimer;
-    boolean hasEnded = false;
+//    boolean hasEnded = false;
 
     public EndPanel(Main mainInstance) {
         this.mainInstance = mainInstance; // Assign the passed instance to the local instance
@@ -28,7 +26,7 @@ public class EndPanel {
         EndLabel.setForeground(Color.WHITE);
         EndLabel.setBackground(Color.WHITE);
 
-        Restart.setBounds(350,300,100,50);
+        Restart.setBounds(300,300,100,50);
 
         EndPanel.add(Restart);
         EndPanel.add(EndLabel);
@@ -38,12 +36,7 @@ public class EndPanel {
             ((Timer)e.getSource()).stop();
         });
 
-        Restart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                restartGame();
-            }
-        });
+        Restart.addActionListener(e -> restartGame());
 
         EndPanel.setLayout(null);
         EndPanel.setVisible(false);
@@ -56,12 +49,15 @@ public class EndPanel {
 
         mainInstance.seconds = 0;
 
+        mainInstance.CoinCount.setText("");
+
         // Reset player
         mainInstance.Player.reset();
         mainInstance.Player.Player.setVisible(true);
 
         // Reset Enemies
         mainInstance.Bomb.reset();
+        mainInstance.Bomb2.reset();
         mainInstance.Sniper.reset();
         mainInstance.Charger.reset();
         mainInstance.Beam.reset();

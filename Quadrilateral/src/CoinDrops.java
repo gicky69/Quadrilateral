@@ -30,7 +30,6 @@ public class CoinDrops {
     boolean isCollected = false;
     Timer CoinIdleDelay;
     Timer CoinVulnerability;
-    int TimerCoins = 10;
 
     public CoinDrops(Main MF) {
         CoinPanel = new JPanel();

@@ -50,7 +50,6 @@ public class WOD {
     }
 
     public void update() {
-        System.out.println(pos);
         switch (pos) {
             case 1:
                 Indicator.setBounds(20, 300, 30, 64);

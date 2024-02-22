@@ -7,6 +7,7 @@ import java.util.Random;
 public class Sniper {
     JLabel Sniper;
     JLabel Bullet;
+    JLabel BulletHitbox;
     Image SniperImage = new ImageIcon("Quadrilateral/src/Images/Shooter.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image BulletImage = new ImageIcon("Quadrilateral/src/Images/Bone.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     ImageIcon BulletIcon = new ImageIcon(BulletImage);
@@ -28,11 +29,13 @@ public class Sniper {
     public Sniper(Player Player) {
         Sniper = new JLabel();
         Bullet = new JLabel();
+        BulletHitbox = new JLabel();
         rand = new Random();
 
         Sniper.setIcon(SniperIcon);
 
 //        Sniper.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        BulletHitbox.setBorder(BorderFactory.createLineBorder(Color.RED));
         Sniper.setVisible(false);
         Sniper.setBounds(0,0,64,64);
 
@@ -41,6 +44,7 @@ public class Sniper {
             if (Sniper.isVisible() && start){
                 shoots = true;
                 Bullet.setBounds(Sniper.getX()+16, Sniper.getY()+16, 64, 64);
+                BulletHitbox.setBounds(Bullet.getX()+16, Bullet.getY()+16, 32, 32);
                 Bullet.setIcon(BulletIcon);
                 Bullet.setVisible(true);
                 ((Timer)e.getSource()).stop();
@@ -64,10 +68,11 @@ public class Sniper {
                 dir = Math.atan2(dy,dx);
 
                 Bullet.setLocation(Bullet.getX() + (int)(Math.cos(dir) * 13), Bullet.getY() + (int)(Math.sin(dir) * 13));
+                BulletHitbox.setLocation(Bullet.getX() + 16, Bullet.getY() + 16);
             }
         }
 
-        if (start == true){
+        if (start){
             SpawnDelayTimer.start();
         }
     }
@@ -84,6 +89,7 @@ public class Sniper {
     public void reset() {
         Sniper.setVisible(false);
         Bullet.setVisible(false);
+        BulletHitbox.setVisible(false);
         start = false;
         shoots = false;
     }

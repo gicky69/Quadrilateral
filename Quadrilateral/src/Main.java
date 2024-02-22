@@ -19,6 +19,7 @@ public class Main implements Runnable {
     WOD WOD;
     CoinDrops CoinDrops;
     Bomb Bomb;
+    Bomb2 Bomb2;
     Beams Beam;
     Sniper Sniper;
     Player Player;
@@ -54,6 +55,7 @@ public class Main implements Runnable {
         PauseMenu = new JPanel();
         PauseL = new JLabel("Paused");
         Bomb = new Bomb();
+        Bomb2 = new Bomb2();
         Sniper = new Sniper(Player);
         Charger = new Charger();
         Beam = new Beams();
@@ -67,7 +69,7 @@ public class Main implements Runnable {
         IGTimerP = new JPanel();
         IGTimerL = new JLabel();
 
-        Frame.setTitle("Dodge It!");
+        Frame.setTitle("Final Project");
         Frame.setSize(1280, 760);
         Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Frame.setLayout(null);
@@ -76,7 +78,7 @@ public class Main implements Runnable {
 
         Bounds1.setBounds(290,0,800,10);
 
-        Bounds2.setBounds(260,20,10,800);
+        Bounds2.setBounds(267,20,10,800);
 
         Bounds3.setBounds(1085,20,10,800);
 
@@ -130,6 +132,7 @@ public class Main implements Runnable {
 //                Frame.add(Beam.Shooter);
 //                Frame.add(Beam.Beam);
                 Frame.add(Sniper.Sniper);
+                Frame.add(Sniper.BulletHitbox);
 
                 Frame.add(CoinDrops.CoinDrops);
                 Frame.add(CoinDrops.CoinHitBox);
@@ -137,6 +140,11 @@ public class Main implements Runnable {
                 Frame.add(Bomb.BombHitbox);
                 Frame.add(Bomb.BombExplosion);
                 Frame.add(Bomb.Bomb);
+
+                Frame.add(Bomb2.BombHitbox);
+                Frame.add(Bomb2.BombExplosion);
+                Frame.add(Bomb2.Bomb);
+
 
                 Frame.add(CoinCount);
                 Frame.add(IGTimerP);
@@ -153,8 +161,6 @@ public class Main implements Runnable {
 
         IGTimer = new Timer(1000, e -> {
             seconds += 1;
-            int minutes = seconds / 60;
-            int sec = seconds % 60;
         });
     }
 
@@ -178,7 +184,7 @@ public class Main implements Runnable {
     }
 
     public void run() {
-        while(true) {
+        while (true) {
             if (EndPanel.Restart.isEnabled()) {
                 EndPanel.Restart.addActionListener(e -> {
                     EndPanel.EndPanel.setVisible(false);
@@ -195,14 +201,18 @@ public class Main implements Runnable {
                         Bomb.start = true;
                         WOD.speed = 4;
                     }
-                    if (Player.Coins == 10) {
+                    if (Player.Coins == 15) {
                         Sniper.start = true;
                         WOD.speed = 5;
                         Bomb.BombDuration = 2000;
                     }
-                    if (Player.Coins == 15) {
+                    if (Player.Coins == 25) {
                         Charger.start = true;
                         WOD.speed = 6;
+                    }
+                    if (Player.Coins == 20) {
+                        Bomb2.start = true;
+                        WOD.speed = 7;
                     }
 
                     Sniper.update(Player);
@@ -210,8 +220,9 @@ public class Main implements Runnable {
                     WOD.update();
 
                     Bomb.update();
+                    Bomb2.update();
 
-                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.isDodge){
+                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.isDodge && !CoinDrops.isCollected){
                         CoinDrops.collected(this);
                         Player.Coins += 1;
                         CoinCount.setText("" + Player.Coins);
@@ -221,7 +232,7 @@ public class Main implements Runnable {
                     if (
                             (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
                              || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.BulletHitbox.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())
                              || (Player.PlayerHitbox.getBounds().intersects(Charger.Charger.getBounds()) && !Player.isDodge && Charger.Charger.isVisible())) {
                         Player.isDead = true;
                         if (Player.isDead) {

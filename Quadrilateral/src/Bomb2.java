@@ -7,7 +7,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Random;
 
-public class Bomb {
+public class Bomb2 {
     JLabel Bomb;
     Image BombImage = new ImageIcon("Quadrilateral/src/Images/Bomb.gif").getImage().getScaledInstance(64,64,Image.SCALE_DEFAULT);
     Image ExplosionImage = new ImageIcon("Quadrilateral/src/Images/Explosion.gif").getImage().getScaledInstance(192,192,Image.SCALE_DEFAULT);
@@ -27,7 +27,7 @@ public class Bomb {
     Timer BombRandomSpawn;
     Timer ExplodeTimer;
 
-    public Bomb() {
+    public Bomb2() {
         Bomb = new JLabel();
         BombExplosion = new JLabel();
         BombHitbox = new JLabel();
