@@ -65,7 +65,10 @@ public class Player implements KeyListener {
     boolean isSpacebarSpammed = false;
     boolean isDead = false;
     boolean MovingLeft = false;
+    boolean MovingUp = false;
+    boolean MovingDown = false;
     boolean MovingRight = false;
+    boolean Jump = false;
     Timer DodgeTime;
     //
     Random random;
@@ -104,6 +107,19 @@ public class Player implements KeyListener {
     public void update(Main MF) {
         if (isDead){
             return;
+        }
+
+        if (MovingUp) {
+            DirY = -3;
+        }
+        if (MovingDown) {
+            DirY = 3;
+        }
+        if (MovingLeft) {
+            DirX = -3;
+        }
+        if (MovingRight) {
+            DirX = 3;
         }
 
         long now = System.nanoTime();
@@ -151,14 +167,14 @@ public class Player implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (!isDead){
             if (e.getKeyCode() == KeyEvent.VK_W) {
-                DirY = -3;
+                MovingUp = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
-                DirY = 3;
+                MovingDown = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
@@ -166,33 +182,34 @@ public class Player implements KeyListener {
             }
 
             if (e.getKeyCode() == KeyEvent.VK_A) {
-                DirX = -3;
+                MovingLeft = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
                 if (!isDodge) { // Check if player is not dodging
                     Player.setIcon(PlayerMovingLeftIcon);
-                    MovingLeft = true;
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
-                DirX = 3;
+                MovingRight = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
                 if (!isDodge) {
                     Player.setIcon(PlayerWalkingRightIcon);
-                    MovingRight = true;
                 }
             }
 
             if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && !isSpacebarSpammed) {
                 isSpacebarSpammed = true;
                 isDodge = true;
+                Jump = true;
 
-                Player.setIcon(PlayerJumpinngIcon);
+                if (Jump){
+                    Player.setIcon(PlayerJumpinngIcon);
+                }
 
                 if (isDodge) {
                     if (jsfx >= 3) { jsfx = 0; }
@@ -223,10 +240,12 @@ public class Player implements KeyListener {
             if(e.getKeyCode() == KeyEvent.VK_W) {
                 DirY = 0;
                 kfxclick = false;
+                MovingUp = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_S) {
                 DirY = 0;
                 kfxclick = false;
+                MovingDown = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_A) {
                 if (!isDodge){
@@ -247,6 +266,7 @@ public class Player implements KeyListener {
 
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 isSpacebarSpammed = false;
+                Jump = false;
             }
         }
     }
