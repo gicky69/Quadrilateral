@@ -89,8 +89,8 @@ public class Bomb {
 
             System.out.println("Bomb Spawned");
 
-            x = Rand.nextInt(735) + 290;
-            y = Rand.nextInt(608) + 30;
+            x = Rand.nextInt(540)+260;
+            y = Rand.nextInt(550)+120;
             Bomb.setBounds(x,y,64,64);
             BombExplosion.setBounds(Bomb.getX()-64, Bomb.getY()-64, Bomb.getWidth()+128, Bomb.getHeight()+128);
         }
@@ -122,6 +122,8 @@ public class Bomb {
         Bomb.setBounds(0,0,0,0);
         BombExplosion.setBounds(0,0,0,0);
         BombHitbox.setBounds(0,0,0,0);
+
+        ExplodeTimer.stop();
         start = false;
     }
 }

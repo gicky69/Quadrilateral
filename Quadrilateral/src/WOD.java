@@ -51,47 +51,40 @@ public class WOD {
 
     public void update() {
         System.out.println(pos);
-        switch (pos) {
-            case 1:
-                Indicator.setBounds(20, 300, 30, 64);
-                Indicator.setIcon(Indicator1);
-
-                if (start){
-                    WOD.setBounds(WOD.getX() + speed, WOD.getY(), 32, 660);
-                    WOD.setIcon(WODIcon1);
-                }
-                break;
-            case 2:
-                Indicator.setBounds(650, 630, 64, 30);
-                Indicator.setIcon(Indicator4);
-                if (start){
-                    WOD.setBounds(WOD.getX(), WOD.getY() - speed, 820, 32);
-                    WOD.setIcon(WODIcon2);
-                }
-                break;
-            case 3:
-                Indicator.setBounds(1230, 300, 30, 64);
-                Indicator.setIcon(Indicator2);
-                if (start){
-                    WOD.setBounds(WOD.getX() - speed, WOD.getY(), 32, 660);
-                    WOD.setIcon(WODIcon1);
-                }
-                break;
-            case 4:
-                Indicator.setBounds(660, 10, 64, 30);
-                Indicator.setIcon(Indicator3);
-                if (start){
-                    WOD.setBounds(WOD.getX(), WOD.getY() + speed, 820, 32);
-                    WOD.setIcon(WODIcon2);
-                }
-                break;
+        if (start){
+            switch (pos) {
+                case 1:
+                    if (start){
+                        WOD.setLocation(WOD.getX() + speed, WOD.getY());
+                        WOD.setIcon(WODIcon1);
+                    }
+                    break;
+                case 2:
+                    if (start){
+                        WOD.setLocation(WOD.getX(), WOD.getY() - speed);
+                        WOD.setIcon(WODIcon2);
+                    }
+                    break;
+                case 3:
+                    if (start){
+                        WOD.setLocation(WOD.getX() - speed, WOD.getY());
+                        WOD.setIcon(WODIcon1);
+                    }
+                    break;
+                case 4:
+                    if (start){
+                        WOD.setLocation(WOD.getX(), WOD.getY() + speed);
+                        WOD.setIcon(WODIcon2);
+                    }
+                    break;
+            }
         }
 
         if (
                 pos == 1 && WOD.getX() > 1300
-                        || pos == 3 && WOD.getX() < -32
-                        || pos == 2 && WOD.getY() < -32
-                        || pos == 4 && WOD.getY() > 800) {
+                        || pos == 3 && WOD.getX() < -38
+                        || pos == 2 && WOD.getY() < -38
+                        || pos == 4 && WOD.getY() > 952) {
             start = false;
             randomSpawn();
         }
@@ -100,16 +93,25 @@ public class WOD {
     public void create(int pos) {
         switch (pos) {
             case 1:
-                WOD.setBounds(-32,15,32,660);
+                Indicator.setBounds(20, 450, 30, 64);
+                Indicator.setIcon(Indicator1);
+
+                WOD.setBounds(-38,120,38,730);
                 break;
             case 2:
-                WOD.setBounds(278,732,820,32);
+                Indicator.setBounds(650, 850, 64, 30);
+                Indicator.setIcon(Indicator4);
+                WOD.setBounds(200,952,900,38);
                 break;
             case 3:
-                WOD.setBounds(1300,10,32,660);
+                Indicator.setBounds(1230, 450, 30, 64);
+                Indicator.setIcon(Indicator2);
+                WOD.setBounds(1500,110,38,730);
                 break;
             case 4:
-                WOD.setBounds(278,-32,820,32);
+                Indicator.setBounds(650, 10, 64, 30);
+                Indicator.setIcon(Indicator3);
+                WOD.setBounds(200,-38,900,38);
                 break;
         }
     }

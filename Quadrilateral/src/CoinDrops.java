@@ -5,16 +5,12 @@ import java.util.Random;
 import java.awt.*;
 
 public class CoinDrops {
-    JPanel CoinPanel;
     JLabel CoinDrops;
     JLabel CoinHitBox;
-    Image CoinImage = new ImageIcon("Quadrilateral/src/Images/Coins-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
     Image CoinAppearImage = new ImageIcon("Quadrilateral/src/Images/Coins-Appear.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
     Image CoinIdleImage = new ImageIcon("Quadrilateral/src/Images/Coins-Idle.gif").getImage().getScaledInstance(48,48,Image.SCALE_DEFAULT);
     ImageIcon CoinAppearIcon = new ImageIcon(CoinAppearImage);
     ImageIcon CoinIdleIcon = new ImageIcon(CoinIdleImage);
-    ImageIcon CoinIcon = new ImageIcon(CoinImage);
-
     int CoinGifDuration = 510;
 
     // SFX
@@ -30,17 +26,15 @@ public class CoinDrops {
     boolean isCollected = false;
     Timer CoinIdleDelay;
     Timer CoinVulnerability;
-    int TimerCoins = 10;
 
     public CoinDrops(Main MF) {
-        CoinPanel = new JPanel();
         CoinDrops = new JLabel();
         CoinHitBox = new JLabel();
 
         rand = new Random();
 
-        x = rand.nextInt(735) + 290;
-        y = rand.nextInt(608) + 30;
+        x = rand.nextInt(735) + 260;
+        y = rand.nextInt(608) + 150;
 
         CoinDrops.setBounds(x,y,64,64);
         CoinHitBox.setBounds(x+15,y+23,18,20);
@@ -65,8 +59,9 @@ public class CoinDrops {
     public void spawn(){
         CoinVulnerability.start();
         CoinDrops.setIcon(CoinAppearIcon);
-        int cx = rand.nextInt(635) + 290;
-        int cy = rand.nextInt(408) + 30;
+        int cx = rand.nextInt(540)+260;
+        int cy = rand.nextInt(550)+120;
+
         CoinIdleDelay.start();
 
         CoinDrops.setBounds(cx, cy, 64, 64);

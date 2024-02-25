@@ -3,6 +3,23 @@ import java.awt.*;
 
 public class Main implements Runnable {
 
+    // Number Images
+    ImageIcon[] numberIcons = {
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/0.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/1.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/2.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/3.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/4.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/5.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/6.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/7.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/8.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
+            new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/9.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT))
+    };
+
+    ImageIcon icon = new ImageIcon("Quadrilateral/src/Images/FunTalon.png");
+
+    JLabel[] digitLabels;
     JFrame Frame;
     JLabel CoinCount;
     JLabel Bounds1;
@@ -19,8 +36,11 @@ public class Main implements Runnable {
     WOD WOD;
     CoinDrops CoinDrops;
     Bomb Bomb;
+    Bomb2 Bomb2;
+    Nuke Nuke;
     Beams Beam;
     Sniper Sniper;
+    Sniper2 Sniper2;
     Player Player;
     Charger Charger;
     Thread GameThread;
@@ -37,12 +57,29 @@ public class Main implements Runnable {
         Frame = new JFrame();
         Player = new Player();
 
+        Frame.setIconImage(icon.getImage());
+
         Bounds1 = new JLabel();
         Bounds2 = new JLabel();
         Bounds3 = new JLabel();
         Bounds4 = new JLabel();
 
+//        Bounds1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        Bounds2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        Bounds3.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//        Bounds4.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
         CoinCount = new JLabel();
+
+        digitLabels = new JLabel[3]; // Assuming the maximum coin count is 999
+
+        for (int i = 0; i < digitLabels.length; i++) {
+            digitLabels[i] = new JLabel();
+            digitLabels[i].setHorizontalAlignment(JLabel.CENTER);
+            digitLabels[i].setVerticalAlignment(JLabel.CENTER);
+            digitLabels[i].setBounds(660 + i * 24, 100, 24, 32); // Adjust the position and size as needed
+            Frame.add(digitLabels[i]);
+        }
 
         // Main Menu
         MainMenu = new MainMenu();
@@ -53,8 +90,11 @@ public class Main implements Runnable {
         CoinDrops = new CoinDrops(this);
         PauseMenu = new JPanel();
         PauseL = new JLabel("Paused");
+        Nuke = new Nuke();
         Bomb = new Bomb();
+        Bomb2 = new Bomb2();
         Sniper = new Sniper(Player);
+        Sniper2 = new Sniper2(Player);
         Charger = new Charger();
         Beam = new Beams();
         //
@@ -67,20 +107,17 @@ public class Main implements Runnable {
         IGTimerP = new JPanel();
         IGTimerL = new JLabel();
 
-        Frame.setTitle("Dodge It!");
-        Frame.setSize(1280, 760);
+        Frame.setTitle("Fun Talon!");
+        Frame.setSize(1280, 960);
         Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Frame.setLayout(null);
         Frame.setLocationRelativeTo(null);
         Frame.setResizable(false);
 
-        Bounds1.setBounds(290,0,800,10);
-
-        Bounds2.setBounds(260,20,10,800);
-
-        Bounds3.setBounds(1085,20,10,800);
-
-        Bounds4.setBounds(290,660,800,10);
+        Bounds1.setBounds(260,110,800,10);
+        Bounds2.setBounds(1080,20,10,800);
+        Bounds3.setBounds(260,20,10,800);
+        Bounds4.setBounds(260,805,800,10);
 
         PauseMenu.setBounds(540, 25, 200,650);
         PauseMenu.setLayout(null);
@@ -98,20 +135,33 @@ public class Main implements Runnable {
         IGTimerP.setBounds(640,0,100,30);
         IGTimerP.setBackground(new Color(80,88,109));
         Frame.getContentPane().setBackground(new Color(80,88,109));
-        IGTimerL.setText("");
         IGTimerP.add(IGTimerL);
 
-        Frame.add(MainMenu.MainMenu);
+
         Frame.repaint();
 
         Frame.setVisible(true);
 
         if (MainMenu.Play.isEnabled()) {
-            MainMenu.Play.addActionListener(e -> {
+            Frame.add(MainMenu.MainMenu);
+            Frame.add(Player.Player);
 
+            Frame.add(WOD.Indicator);
+            Frame.add(WOD.WOD);
+
+            Frame.add(CoinDrops.CoinDrops);
+            Frame.add(CoinDrops.CoinHitBox);
+
+            Frame.add(GamePanel.GamePanel);
+            MainMenu.Play.addActionListener(e -> {
+                MainMenu.PlayMusic(MainMenu.Sfx);
                 Frame.remove(MainMenu.MainMenu);
+                Frame.remove(GamePanel.GamePanel);
+                Frame.remove(WOD.WOD);
 
                 Frame.add(EndPanel.EndPanel);
+
+                Frame.add(WOD.WOD);
 
                 Frame.add(Bounds4);
                 Frame.add(Bounds1);
@@ -119,30 +169,36 @@ public class Main implements Runnable {
                 Frame.add(Bounds3);
 
                 Frame.add(Player.NewEnemy);
-                Frame.add(Player.Player);
                 Frame.add(Player.PlayerHitbox);
-                Frame.add(WOD.Indicator);
-                Frame.add(WOD.WOD);
 
                 Frame.add(Sniper.Bullet);
                 Frame.add(Charger.Charger);
+                Frame.add(Charger.ChargerHitBox);
 
 //                Frame.add(Beam.Shooter);
 //                Frame.add(Beam.Beam);
                 Frame.add(Sniper.Sniper);
+                Frame.add(Sniper2.Sniper);
+                Frame.add(Sniper2.Bullet);
 
-                Frame.add(CoinDrops.CoinDrops);
-                Frame.add(CoinDrops.CoinHitBox);
+                Frame.add(Nuke.Bomb);
+                Frame.add(Nuke.BombExplosion);
+                Frame.add(Nuke.BombHitbox);
 
                 Frame.add(Bomb.BombHitbox);
                 Frame.add(Bomb.BombExplosion);
                 Frame.add(Bomb.Bomb);
+
+                Frame.add(Bomb2.BombHitbox);
+                Frame.add(Bomb2.BombExplosion);
+                Frame.add(Bomb2.Bomb);
 
                 Frame.add(CoinCount);
                 Frame.add(IGTimerP);
                 Frame.add(PauseMenu);
 
                 Frame.add(GamePanel.GamePanel);
+
                 Frame.setVisible(true);
                 Frame.addKeyListener(Player);
                 Frame.setFocusable(true);
@@ -195,39 +251,68 @@ public class Main implements Runnable {
                         Bomb.start = true;
                         WOD.speed = 4;
                     }
-                    if (Player.Coins == 10) {
+                    if (Player.Coins == 15) {
                         Sniper.start = true;
                         WOD.speed = 5;
                         Bomb.BombDuration = 2000;
                     }
-                    if (Player.Coins == 15) {
+                    if (Player.Coins == 20) {
                         Charger.start = true;
+                        Charger.ChargerTimeSpawn.start();
                         WOD.speed = 6;
+                    }
+                    if (Player.Coins == 25) {
+                        Bomb2.start = true;
+                        WOD.speed = 7;
+                    }
+                    if (Player.Coins == 30) {
+                        Sniper2.start = true;
+                    }
+                    if (Player.Coins == 40){
+                        Nuke.start = true;
+                        WOD.speed = 8;
+                    }
+                    if (Player.Coins == 50){
+                        WOD.speed = 9;
                     }
 
                     Sniper.update(Player);
+                    Sniper2.update(Player);
                     Charger.update(Player);
                     WOD.update();
 
+                    Nuke.update();
                     Bomb.update();
+                    Bomb2.update();
 
-                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.isDodge){
+                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.vul && !CoinDrops.isCollected){
                         CoinDrops.collected(this);
                         Player.Coins += 1;
-                        CoinCount.setText("" + Player.Coins);
+                        String coinCountStr = String.format("%01d", Player.Coins); // Format the coin count as a 3-digit string
+                        for (int i = 0; i < coinCountStr.length(); i++) {
+                            int digit = Character.getNumericValue(coinCountStr.charAt(i));
+                            digitLabels[i].setIcon(numberIcons[digit]);
+                        }
                     }
 
                     // Player Dead
                     if (
-                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.isDodge)
-                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.isDodge && Bomb.BombExplosion.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.isDodge && Sniper.Bullet.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Charger.Charger.getBounds()) && !Player.isDodge && Charger.Charger.isVisible())) {
+                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.vul)
+                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.vul && Bomb.BombExplosion.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Bomb2.BombHitbox.getBounds()) && !Player.vul && Bomb2.BombExplosion.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.vul && Sniper.Bullet.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Sniper2.Bullet.getBounds()) && !Player.vul && Sniper2.Bullet.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Nuke.BombHitbox.getBounds()) && !Player.vul && Nuke.BombExplosion.isVisible())
+                             || (Player.PlayerHitbox.getBounds().intersects(Charger.ChargerHitBox.getBounds()) && !Player.vul && Charger.Charger.isVisible())) {
                         Player.isDead = true;
+                        EndPanel.update();
                         if (Player.isDead) {
+                            Player.Player.setIcon(Player.PlayerDeathAppearIcon);
+                            WOD.start = false;
+                            Player.DodgeTime.stop();
                             Player.PlayMusic(Player.dfx);
 
-                            Player.Player.setIcon(Player.PlayerDeathAppearIcon);
+
                             Timer DeathDelay = new Timer(300, e ->{
                                 Player.Player.setIcon(Player.PlayerDeathIcon);
                                 ((Timer)e.getSource()).stop();

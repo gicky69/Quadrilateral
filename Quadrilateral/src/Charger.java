@@ -1,5 +1,10 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Random;
 
 public class Charger {
@@ -33,6 +38,7 @@ public class Charger {
     ImageIcon ChargerIcon4F = new ImageIcon(ChargerImg4F);
 
     JLabel Charger;
+    JLabel ChargerHitBox;
     Timer ChargerTimeSpawn;
     Timer ChargeTimer;
     Timer ChargerDelay;
@@ -43,13 +49,21 @@ public class Charger {
     int pos;
     Random rand;
 
+    // Sfx
+    String csfx = "Quadrilateral/src/Sounds/Game/charge.wav";
+
     public Charger() {
         Charger = new JLabel();
+        ChargerHitBox = new JLabel();
         rand = new Random();
+
+        ChargerHitBox.setBounds(0,0,48,48);
         Charger.setBounds(0,0,48,48);
 //        Charger.setBorder(BorderFactory.createLineBorder(Color.RED));
         Charger.setVisible(false);
 
+
+        // Spawn Timer
         ChargerTimeSpawn = new Timer(1500, e -> {
             if (start) {
                 randomSpawn();
@@ -58,14 +72,17 @@ public class Charger {
             }
         });
 
+        // Charge Start Timer
         ChargeTimer = new Timer(1000, e -> {
            if (Charger.isVisible()){
-                ChargerDelay.start();
+               PlayMusic(csfx);
+               ChargerDelay.start();
            }
             ((Timer)e.getSource()).stop();
         });
 
-        ChargerDelay = new Timer(1700, e -> {
+        // Charge Delay Timer
+        ChargerDelay = new Timer(4000, e -> {
             Charger.setVisible(false);
             ChargerTimeSpawn.start();
             ((Timer)e.getSource()).stop();
@@ -73,34 +90,37 @@ public class Charger {
     }
 
     public void update(Player player) {
-        if (start) {
-            System.out.println("Charger is charging");
-            ChargerTimeSpawn.start();
-
-            if (Charger.isVisible()){
-                if (start) {
-                    switch (pos) {
-                        case 1:
-                            Charger.setLocation(Charger.getX() + velocity, Charger.getY() + velocity);
-                            Charger.setIcon(ChargerIcon1F);
-                            break;
-                        case 2:
-                            Charger.setLocation(Charger.getX() + velocity, Charger.getY() - velocity);
-                            Charger.setIcon(ChargerIcon3F);
-                            break;
-                        case 3:
-                            Charger.setLocation(Charger.getX() - velocity, Charger.getY() + velocity);
-                            Charger.setIcon(ChargerIcon2F);
-                            break;
-                        case 4:
-                            Charger.setLocation(Charger.getX() - velocity, Charger.getY() - velocity);
-                            Charger.setIcon(ChargerIcon4F);
-                            break;
-                    }
+        if (!ChargeTimer.isRunning()){
+            if (start) {
+                switch (pos) {
+                    case 1:
+                        Charger.setLocation(Charger.getX() + velocity, Charger.getY() + velocity);
+                        ChargerHitBox.setBounds(Charger.getX()+13, Charger.getY()+14, 32, 32);
+                        Charger.setIcon(ChargerIcon1F);
+                        break;
+                    case 2:
+                        Charger.setLocation(Charger.getX() + velocity, Charger.getY() - velocity);
+                        ChargerHitBox.setBounds(Charger.getX()+13, Charger.getY()+8, 32, 28);
+                        Charger.setIcon(ChargerIcon3F);
+                        break;
+                    case 3:
+                        Charger.setLocation(Charger.getX() - velocity, Charger.getY() + velocity);
+                        ChargerHitBox.setBounds(Charger.getX()+2, Charger.getY()+14, 32, 32);
+                        Charger.setIcon(ChargerIcon2F);
+                        break;
+                    case 4:
+                        Charger.setLocation(Charger.getX() - velocity, Charger.getY() - velocity);
+                        ChargerHitBox.setBounds(Charger.getX()+2, Charger.getY()+8, 32, 28);
+                        Charger.setIcon(ChargerIcon4F);
+                        break;
                 }
+
+                ChargerDelay.start();
             }
         }
     }
+
+
 
     public void randomSpawn() {
         if (start) {
@@ -109,19 +129,19 @@ public class Charger {
             System.out.println("Charger Spawned at " + pos);
             switch (pos) {
                 case 1:
-                    Charger.setBounds(242,5,48,48);
+                    Charger.setBounds(242,120,48,48);
                     Charger.setIcon(ChargerIcon1);
                     break;
                 case 2:
-                    Charger.setBounds(242,620,48,48);
+                    Charger.setBounds(242,750,48,48);
                     Charger.setIcon(ChargerIcon3);
                     break;
                 case 3:
-                    Charger.setBounds(1100,5,48,48);
+                    Charger.setBounds(1050,120,48,48);
                     Charger.setIcon(ChargerIcon2);
                     break;
                 case 4:
-                    Charger.setBounds(1100,620,48,48);
+                    Charger.setBounds(1050,750,48,48);
                     Charger.setIcon(ChargerIcon4);
                     break;
             }
@@ -132,5 +152,27 @@ public class Charger {
     public void reset() {
         Charger.setVisible(false);
         start = false;
+    }
+
+    public static void PlayMusic(String filepath) {
+        // if key is pressed
+        try {
+            File musicFile = new File(filepath);
+
+            if (musicFile.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-5.0f);
+                clip.start();
+            }
+            else {
+                System.out.println("File not found");
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

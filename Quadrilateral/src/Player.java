@@ -32,6 +32,14 @@ public class Player implements KeyListener {
     ImageIcon deathIcon = new ImageIcon(PlayerDeathIdleImage);
     ImageIcon PlayerIconIdle = new ImageIcon(PlayerImageIdle);
 
+
+    // New Enemies
+    boolean hasSpawned = false;
+    ImageIcon BombIIcon = new ImageIcon("Quadrilateral/src/Images/Milestones/BombI.gif");
+    ImageIcon ChargerIIcon = new ImageIcon("Quadrilateral/src/Images/Milestones/ChargerI.gif");
+    ImageIcon SniperIIcon = new ImageIcon("Quadrilateral/src/Images/Milestones/SniperI.gif");
+    ImageIcon NukeIIcon = new ImageIcon("Quadrilateral/src/Images/Milestones/NukeI.gif");
+
     // Sound
     int jsfx = 0;
     String jfx = "Quadrilateral/src/Sounds/Jump/JSFX1.wav";
@@ -41,6 +49,13 @@ public class Player implements KeyListener {
     String kfx = "Quadrilateral/src/Sounds/keyclick.wav";
     String dfx = "Quadrilateral/src/Sounds/Game/deathwav.wav";
     static boolean kfxclick = false;
+
+    // Level Up
+    String lfxs[] = {
+            "Quadrilateral/src/Sounds/Game/levelup.wav",
+            "Quadrilateral/src/Sounds/Game/levelup (1).wav",
+            "Quadrilateral/src/Sounds/Game/levelup (4).wav"};
+
     //
 
 
@@ -56,11 +71,14 @@ public class Player implements KeyListener {
     static int Health = 100;
     boolean isDodge;
     boolean isSpacebarSpammed = false;
-    boolean hasEnemySpawned = false;
+    boolean vul = false;
     boolean isDead = false;
     boolean MovingLeft = false;
     boolean MovingRight = false;
+    boolean MovingUp = false;
+    boolean MovingDown = false;
     Timer DodgeTime;
+    Timer vulTimer;
     //
     Random random;
 
@@ -92,6 +110,11 @@ public class Player implements KeyListener {
         DodgeTime.setRepeats(false);
 //        PlayerHitbox.setBorder(BorderFactory.createLineBorder(Color.RED));
 
+        vulTimer = new Timer(450 , e -> {
+            vul = false;
+            ((Timer)e.getSource()).stop();
+        });
+        vulTimer.setRepeats(false);
     }
 
 
@@ -101,22 +124,6 @@ public class Player implements KeyListener {
         }
 
         if (!isDead){
-            if (Coins == 15 && !hasEnemySpawned) {
-                NewEnemy.setVisible(true);
-                if (NewEnemy.isVisible()) {
-                    System.out.println("+ enemies");
-                    NewEnemy.setText("+ sniper");
-                    NewEnemy.setBounds(Player.getX()+32, Player.getY()-15, 20, 10);
-
-                    Timer NewEnemyTimer = new Timer(2000, e -> {
-                        NewEnemy.setVisible(false);
-                        ((Timer)e.getSource()).stop();
-                    });
-                    NewEnemyTimer.start();
-                }
-                hasEnemySpawned = true; // Set the flag to true after the enemy has spawned
-            }
-
             oldPosX = PosX;
             oldPosY = PosY;
 
@@ -140,11 +147,104 @@ public class Player implements KeyListener {
                 PlayerHitbox.setBounds(PosX+20, PosY+38, 24, 25);
             }
 
+            if (MovingLeft) {
+                DirX = -4;
+            }
+            if (MovingRight) {
+                DirX = 4;
+            }
+            if (MovingUp) {
+                DirY = -4;
+            }
+            if (MovingDown) {
+                DirY = 4;
+            }
+
             if (MovingLeft && !isDodge) {
                 Player.setIcon(PlayerMovingLeftIcon);
             }
             if (MovingRight && !isDodge) {
                 Player.setIcon(PlayerWalkingRightIcon);
+            }
+
+            if ((Coins > 5 && Coins < 15) || (Coins > 15 && Coins < 20) || (Coins > 20 && Coins < 25) || (Coins > 25 && Coins < 30) || (Coins > 30 && Coins < 40)) {
+                hasSpawned = false;
+            }
+
+            if ((Coins == 5 && !hasSpawned) || (Coins == 25 && !hasSpawned)) {
+                int l = random.nextInt(2);
+                PlayMusic(lfxs[l]);
+                NewEnemy.setVisible(true);
+                NewEnemy.setIcon(BombIIcon);
+                NewEnemy.setBounds(PosX+10, PosY-25, 50, 24);
+
+                Timer NewEnemyTimer = new Timer(1000, e -> {
+                    NewEnemy.setVisible(false);
+                    ((Timer)e.getSource()).stop();
+                });
+
+                NewEnemyTimer.start();
+                hasSpawned = true;
+            }
+            if (Coins == 15 && !hasSpawned){
+                int l = random.nextInt(2);
+                PlayMusic(lfxs[l]);
+                NewEnemy.setVisible(true);
+                NewEnemy.setIcon(SniperIIcon);
+                NewEnemy.setBounds(PosX+10, PosY-25, 100, 32);
+
+                Timer NewEnemyTimer = new Timer(1000, e -> {
+                    NewEnemy.setVisible(false);
+                    ((Timer)e.getSource()).stop();
+                });
+
+                NewEnemyTimer.start();
+                hasSpawned = true;
+            }
+            if (Coins == 20 && !hasSpawned) {
+                int l = random.nextInt(2);
+                PlayMusic(lfxs[l]);
+                NewEnemy.setVisible(true);
+                NewEnemy.setIcon(ChargerIIcon);
+                NewEnemy.setBounds(PosX+10, PosY-10, 100, 32);
+
+                Timer NewEnemyTimer = new Timer(1000, e -> {
+                    NewEnemy.setVisible(false);
+                    ((Timer)e.getSource()).stop();
+                });
+
+                NewEnemyTimer.start();
+                hasSpawned = true;
+            }
+            if (Coins == 30 && !hasSpawned) {
+                int l = random.nextInt(2);
+                PlayMusic(lfxs[l]);
+                NewEnemy.setVisible(true);
+                NewEnemy.setIcon(SniperIIcon);
+                NewEnemy.setBounds(PosX+10, PosY-25, 10, 32);
+
+                Timer NewEnemyTimer = new Timer(1000, e -> {
+                    NewEnemy.setVisible(false);
+                    ((Timer)e.getSource()).stop();
+                });
+
+                NewEnemyTimer.start();
+                hasSpawned = true;
+            }
+            if (Coins == 40 && !hasSpawned) {
+                int l = random.nextInt(2);
+                PlayMusic(lfxs[l]);
+                NewEnemy.setVisible(true);
+                NewEnemy.setIcon(NukeIIcon);
+                NewEnemy.setBounds(PosX+10, PosY-25, 100, 64);
+
+                Timer NewEnemyTimer = new Timer(1000, e -> {
+                    NewEnemy.setVisible(false);
+                    ((Timer)e.getSource()).stop();
+                });
+
+                NewEnemyTimer.start();
+                hasSpawned = true;
             }
         }
     }
@@ -156,14 +256,14 @@ public class Player implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (!isDead){
             if (e.getKeyCode() == KeyEvent.VK_W) {
-                DirY = -3;
+                MovingUp = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
-                DirY = 3;
+                MovingDown = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
@@ -171,31 +271,31 @@ public class Player implements KeyListener {
             }
 
             if (e.getKeyCode() == KeyEvent.VK_A) {
-                DirX = -3;
+                MovingLeft = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
                 if (!isDodge) { // Check if player is not dodging
                     Player.setIcon(PlayerMovingLeftIcon);
-                    MovingLeft = true;
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
-                DirX = 3;
+                MovingRight = true;
                 if (!kfxclick){
                     PlayMusic(kfx);
                     kfxclick = true;
                 }
                 if (!isDodge) { // Check if player is not dodging
                     Player.setIcon(PlayerWalkingRightIcon);
-                    MovingRight = true;
                 }
             }
 
             if (e.getKeyCode() == KeyEvent.VK_SPACE && !isDodge && !isSpacebarSpammed) {
                 isSpacebarSpammed = true;
                 isDodge = true;
+                vul = true;
+                vulTimer.start();
 
                 if (isDodge) {
                     Player.setIcon(PlayerJumpinngIcon);
@@ -226,20 +326,26 @@ public class Player implements KeyListener {
         if (!isDead){
             if(e.getKeyCode() == KeyEvent.VK_W) {
                 DirY = 0;
+                MovingUp = false;
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_S) {
                 DirY = 0;
+                MovingDown = false;
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_A) {
-                Player.setIcon(PlayerIcon);
+                if (!isDodge) { // Check if player is not dodging
+                    Player.setIcon(PlayerIcon);
+                }
                 DirX = 0;
                 MovingLeft = false;
                 kfxclick = false;
             }
             if(e.getKeyCode() == KeyEvent.VK_D) {
-                Player.setIcon(PlayerIcon);
+                if (!isDodge) { // Check if player is not dodging
+                    Player.setIcon(PlayerIcon);
+                }
                 DirX = 0;
                 MovingRight = false;
                 kfxclick = false;
@@ -290,8 +396,14 @@ public class Player implements KeyListener {
         DirX = 0;
         DirY = 0;
 
+        isSpacebarSpammed = false;
         isDead = false;
         isDodge = false;
+
+        MovingRight = false;
+        MovingLeft = false;
+        MovingUp = false;
+        MovingDown = false;
 
         Coins = 0;
     }
