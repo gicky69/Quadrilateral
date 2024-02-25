@@ -106,7 +106,7 @@ public class Bomb {
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInput);
                 FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                gainControl.setValue(0.0f);
+                gainControl.setValue(5.0f);
                 clip.start();
             }
             else {
