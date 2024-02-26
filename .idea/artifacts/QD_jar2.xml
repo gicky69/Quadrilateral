@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="QD:jar2">
-    <output-path>$PROJECT_DIR$/../../ARt</output-path>
-    <root id="archive" name="QD.jar">
-      <element id="module-output" name="QD" />
-    </root>
-  </artifact>
-</component>

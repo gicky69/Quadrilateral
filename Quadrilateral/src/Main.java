@@ -4,6 +4,7 @@ import java.awt.*;
 public class Main implements Runnable {
 
     // Number Images
+    private volatile boolean running = true;
     ImageIcon[] numberIcons = {
             new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/0.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
             new ImageIcon(new ImageIcon("Quadrilateral/src/Images/Numbers/1.png").getImage().getScaledInstance(24, 32, Image.SCALE_DEFAULT)),
@@ -219,22 +220,12 @@ public class Main implements Runnable {
     }
 
     public void start() {
-        if (GameThread != null) {
-            stop();
-        }
         GameThread = new Thread(this);
         GameThread.start();
     }
 
-    public void stop() {
-        if (GameThread != null) {
-            GameThread.interrupt();
-            GameThread = null;
-        }
-    }
-
     public void run() {
-        while(true) {
+        while (running) {
             if (EndPanel.Restart.isEnabled()) {
                 EndPanel.Restart.addActionListener(e -> {
                     EndPanel.EndPanel.setVisible(false);
@@ -247,7 +238,7 @@ public class Main implements Runnable {
                     PauseMenu.setVisible(false);
                     Player.update(this);
 
-                    if (Player.Coins == 5){
+                    if (Player.Coins == 5) {
                         Bomb.start = true;
                         WOD.speed = 4;
                     }
@@ -268,11 +259,11 @@ public class Main implements Runnable {
                     if (Player.Coins == 30) {
                         Sniper2.start = true;
                     }
-                    if (Player.Coins == 40){
+                    if (Player.Coins == 40) {
                         Nuke.start = true;
                         WOD.speed = 8;
                     }
-                    if (Player.Coins == 50){
+                    if (Player.Coins == 50) {
                         WOD.speed = 9;
                     }
 
@@ -285,7 +276,7 @@ public class Main implements Runnable {
                     Bomb.update();
                     Bomb2.update();
 
-                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.vul && !CoinDrops.isCollected){
+                    if (Player.PlayerHitbox.getBounds().intersects(CoinDrops.CoinHitBox.getBounds()) && !Player.vul && !CoinDrops.isCollected) {
                         CoinDrops.collected(this);
                         Player.Coins += 1;
                         String coinCountStr = String.format("%01d", Player.Coins); // Format the coin count as a 3-digit string
@@ -297,13 +288,13 @@ public class Main implements Runnable {
 
                     // Player Dead
                     if (
-                            (    Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.vul)
-                             || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.vul && Bomb.BombExplosion.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Bomb2.BombHitbox.getBounds()) && !Player.vul && Bomb2.BombExplosion.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.vul && Sniper.Bullet.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Sniper2.Bullet.getBounds()) && !Player.vul && Sniper2.Bullet.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Nuke.BombHitbox.getBounds()) && !Player.vul && Nuke.BombExplosion.isVisible())
-                             || (Player.PlayerHitbox.getBounds().intersects(Charger.ChargerHitBox.getBounds()) && !Player.vul && Charger.Charger.isVisible())) {
+                            (Player.PlayerHitbox.getBounds().intersects(WOD.WOD.getBounds()) && !Player.vul)
+                                    || (Player.PlayerHitbox.getBounds().intersects(Bomb.BombHitbox.getBounds()) && !Player.vul && Bomb.BombExplosion.isVisible())
+                                    || (Player.PlayerHitbox.getBounds().intersects(Bomb2.BombHitbox.getBounds()) && !Player.vul && Bomb2.BombExplosion.isVisible())
+                                    || (Player.PlayerHitbox.getBounds().intersects(Sniper.Bullet.getBounds()) && !Player.vul && Sniper.Bullet.isVisible())
+                                    || (Player.PlayerHitbox.getBounds().intersects(Sniper2.Bullet.getBounds()) && !Player.vul && Sniper2.Bullet.isVisible())
+                                    || (Player.PlayerHitbox.getBounds().intersects(Nuke.BombHitbox.getBounds()) && !Player.vul && Nuke.BombExplosion.isVisible())
+                                    || (Player.PlayerHitbox.getBounds().intersects(Charger.ChargerHitBox.getBounds()) && !Player.vul && Charger.Charger.isVisible())) {
                         Player.isDead = true;
                         EndPanel.update();
                         if (Player.isDead) {
@@ -313,18 +304,18 @@ public class Main implements Runnable {
                             Player.PlayMusic(Player.dfx);
 
 
-                            Timer DeathDelay = new Timer(300, e ->{
+                            Timer DeathDelay = new Timer(300, e -> {
                                 Player.Player.setIcon(Player.PlayerDeathIcon);
-                                ((Timer)e.getSource()).stop();
+                                ((Timer) e.getSource()).stop();
                             });
                             DeathDelay.start();
                             Timer DeathTimer = new Timer(800, e -> {
                                 Player.Player.setVisible(false);
-                                ((Timer)e.getSource()).stop();
+                                ((Timer) e.getSource()).stop();
                             });
                             DeathTimer.start();
 
-                            stop();
+
                         }
                     }
 
@@ -341,10 +332,11 @@ public class Main implements Runnable {
                 EndPanel.EndTimer.start();
             }
             try {
-                Thread.sleep(1000/60);
+                Thread.sleep(1000 / 60);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                running = false;
             }
         }
     }
